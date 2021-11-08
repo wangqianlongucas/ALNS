@@ -16,6 +16,7 @@ class Truck():
         self.order = []
         self.route = self.origin + self.end
         self.time_line = [0,0]
+        self.travel_distance_line_of_route = [0,0]
         self.v = 20  # km/h
 
     def time_line_update(self,insert_position, algorithm_input_data):
@@ -32,7 +33,14 @@ class Truck():
                 is_insert_pass = 0
                 break
         return is_insert_pass
-
+    def travel_distance_line_of_route_update(self, insert_position, algorithm_input_data):
+        node_before, node, node_after = self.route[insert_position - 1], self.route[insert_position], self.route[insert_position + 1]
+        # 插入新增点的行驶距离
+        travel_node = self.travel_distance_line_of_route[insert_position - 1] + algorithm_input_data.Distance_Mat[node_before,node]
+        self.travel_distance_line_of_route.insert(insert_position,travel_node)
+        # 更新插入点后的行驶距离
+        self.travel_distance_line_of_route[insert_position + 1:] = [travel + algorithm_input_data.Distance_Mat[node, node_after]
+                                                                    for travel in self.travel_distance_line_of_route[insert_position + 1:]]
 
 
 class Algorithm_inputdata():
