@@ -7,8 +7,12 @@
 import random
 import copy
 
+import numpy as np
+
 from algorithm_data import Algorithm_inputdata, Truck
 from insert_order import order_insert_simple_in_order, order_insert_greedy, order_insert_random
+from removal_requests import *
+from insert_requests import *
 
 path_of_file = '..//data'
 algorithm_input_data = Algorithm_inputdata(path_of_file)
@@ -58,26 +62,64 @@ def first_stage(algorithm_input_data,solution):
                 if not is_insert_pass_P:
                     print(order, 'data时间设置不合理——从卡车出发点至Pickup点')
 
+def LNS(solution, q, request_blank, num_of_iter, algorithm_input_data):
+    best_solution = solution
+    best_objective = np.Inf
+    best_request_blank = request_blank
+    iter = 1
+    while iter <= num_of_iter:
+        iter += 1
+        current_solution = copy.deepcopy(best_solution)
+        # 订单移除
+        q_orders, removal_solution = random_removal(current_solution, q, algorithm_input_data)
+        # 订单插入
+        insert_orders = request_blank + q_orders
+        request_blank, insert_solution = greedy_insert(removal_solution, insert_orders, algorithm_input_data)
+        current_objective = sum(truck.travel_distance_line_of_route[-1] for truck in list(insert_solution.values())) + algorithm_input_data.M * len(request_blank)
+        if current_objective <= best_objective:
+            best_objective = current_objective
+            best_solution = insert_solution
+            best_request_blank = request_blank
+
+    return best_request_blank, best_solution
+
+
+
+
 # second_stage
 def second_stage(algorithm_input_data,solution):
     is_continue = 1
+    best_solution = solution
+    current_solution = copy.deepcopy(solution)
     while is_continue:
-        list_truck_ID = solution.keys()
-        truck_to_delete = random.choice(list_truck_ID)
+        list_truck_ID = list(current_solution.keys())
+        truck_ID_to_delete = random.choice(list_truck_ID)
+        truck_to_delete = current_solution[truck_ID_to_delete]
         order_blank = truck_to_delete.order
-
+        del current_solution[truck_ID_to_delete]
+        LNS_request_blank, LNS_solution = LNS(current_solution, 3, order_blank, 10, algorithm_input_data)
+        if LNS_request_blank:
+            is_continue = 0
+        else:
+            best_solution = LNS_solution
+            current_solution = copy.deepcopy(best_solution)
+    return best_solution
 
 
 # test_first_stage pass
 solution = {}
 first_stage(algorithm_input_data, solution)
 
+second_stage_solution = second_stage(algorithm_input_data,solution)
 # test order remove  pass
-truck = copy.deepcopy(solution[1])
-
-node_remove = 9
-node_remove_index = truck.route.index(node_remove)
-truck.route.remove(node_remove)
-truck.travel_distance_line_of_route_update_remove(node_remove_index, algorithm_input_data)
-truck.check_and_update(node_remove_index, algorithm_input_data)
+# truck = copy.deepcopy(solution[1])
+#
+# node_remove = 9
+# node_remove_index = truck.route.index(node_remove)
+# truck.route.remove(node_remove)
+# truck.travel_distance_line_of_route_update_remove(node_remove_index, algorithm_input_data)
+# truck.check_and_update(node_remove_index, algorithm_input_data)
 # test_second_stage
+
+q_orders, removal_solution = random_removal(copy.deepcopy(solution), 3, algorithm_input_data)
+request_blank, insert_solution = greedy_insert(removal_solution, q_orders, algorithm_input_data)

@@ -81,6 +81,8 @@ class Algorithm_inputdata():
         self.Nodes = pd.read_csv(path_of_file + '\\Nodes10.csv')
         # 计算距离矩阵
         self.Distance_Mat = self.distance_matrix(self.Nodes)
+        # 惩罚
+        self.M = 80
 
     def distance_matrix(self,pd_data):
         list_include_index_etc = pd_data.values
