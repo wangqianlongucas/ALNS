@@ -65,9 +65,12 @@ class Truck():
             node_before, node] - algorithm_input_data.Distance_Mat[node_before, node_after]
         self.travel_distance_line_of_route[insert_position + 1:] = [travel + travel_change for travel in self.travel_distance_line_of_route[insert_position + 1:]]
 
-    def travel_distance_line_of_route_update_remove(self, insert_position, algorithm_input_data):
-        pass
-
+    def travel_distance_line_of_route_update_remove(self, remove_position, algorithm_input_data):
+        node_before, node = self.route[remove_position - 1], self.route[remove_position]
+        travel_node = self.travel_distance_line_of_route[remove_position - 1] + algorithm_input_data.Distance_Mat[node_before,node]
+        travel_change = self.travel_distance_line_of_route[remove_position] - travel_node
+        # 更新移除点后的行驶距离
+        self.travel_distance_line_of_route[remove_position:] = [travel + travel_change for travel in self.travel_distance_line_of_route[remove_position:]]
 
 class Algorithm_inputdata():
     # 初始化：读取数据和生成参数

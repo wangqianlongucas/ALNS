@@ -71,4 +71,13 @@ def second_stage(algorithm_input_data,solution):
 # test_first_stage pass
 solution = {}
 first_stage(algorithm_input_data, solution)
-# test_second_stage pass
+
+# test order remove  pass
+truck = copy.deepcopy(solution[1])
+
+node_remove = 9
+node_remove_index = truck.route.index(node_remove)
+truck.route.remove(node_remove)
+truck.travel_distance_line_of_route_update_remove(node_remove_index, algorithm_input_data)
+truck.check_and_update(node_remove_index, algorithm_input_data)
+# test_second_stage
