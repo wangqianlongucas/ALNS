@@ -11,21 +11,23 @@ import numpy as np
 class Truck():
     def __init__(self, ID):
         self.id = ID
+        self.capacity = 1.5  # todo 最大载重，检查是否需要调参
         self.origin = [0]
         self.end = [0]
         self.order = []
         self.route = self.origin + self.end
         self.time_line = [0,0]
+        self.capacity_line = [0,0]
         self.travel_distance_line_of_route = [0,0]
-        self.v = 20  # km/h
+        self.v = 35  # km/h
 
-    def time_line_update(self,insert_position, algorithm_input_data):
+    def time_line_update(self, insert_position, algorithm_input_data):
         # 只需要更新插入位置及其后续位置的时间
         self.time_line = self.time_line[:insert_position]
         node_last = self.route[insert_position - 1]
         is_insert_pass = 1
         for node in self.route[insert_position:]:
-            node_time = max(self.time_line[-1] + (algorithm_input_data.Distance_Mat[node_last,node])/self.v,algorithm_input_data.Nodes.loc[node, 'a'])
+            node_time = max(self.time_line[-1] + (algorithm_input_data.Distance_Mat[node_last,node])/self.v, algorithm_input_data.Nodes.loc[node, 'a'])
             if node_time <= algorithm_input_data.Nodes.loc[node, 'b']:
                 self.time_line.append(node_time)
                 node_last = node
@@ -33,14 +35,38 @@ class Truck():
                 is_insert_pass = 0
                 break
         return is_insert_pass
-    def travel_distance_line_of_route_update(self, insert_position, algorithm_input_data):
+
+    def capacity_line_update(self, insert_position, algorithm_input_data):
+        is_insert_pass = 1
+        self.capacity_line = self.capacity_line[:insert_position]
+        for node in self.route[insert_position:]:
+            node_capacity = self.capacity_line[-1] + algorithm_input_data.Nodes.loc[node, 'dm']
+            if node_capacity <= self.capacity:
+                self.capacity_line.append(node_capacity)
+            else:
+                is_insert_pass = 0
+                break
+        return is_insert_pass
+
+    def check_and_update(self, insert_position, algorithm_input_data):
+        is_insert_pass_time = self.time_line_update(insert_position, algorithm_input_data)
+        if is_insert_pass_time:
+            is_insert_pass_capacity = self.capacity_line_update(insert_position, algorithm_input_data)
+            return is_insert_pass_capacity
+        return is_insert_pass_time
+
+    def travel_distance_line_of_route_update_insert(self, insert_position, algorithm_input_data):
         node_before, node, node_after = self.route[insert_position - 1], self.route[insert_position], self.route[insert_position + 1]
         # 插入新增点的行驶距离
         travel_node = self.travel_distance_line_of_route[insert_position - 1] + algorithm_input_data.Distance_Mat[node_before,node]
         self.travel_distance_line_of_route.insert(insert_position,travel_node)
         # 更新插入点后的行驶距离
-        self.travel_distance_line_of_route[insert_position + 1:] = [travel + algorithm_input_data.Distance_Mat[node, node_after]
-                                                                    for travel in self.travel_distance_line_of_route[insert_position + 1:]]
+        travel_change = algorithm_input_data.Distance_Mat[node, node_after] + algorithm_input_data.Distance_Mat[
+            node_before, node] - algorithm_input_data.Distance_Mat[node_before, node_after]
+        self.travel_distance_line_of_route[insert_position + 1:] = [travel + travel_change for travel in self.travel_distance_line_of_route[insert_position + 1:]]
+
+    def travel_distance_line_of_route_update_remove(self, insert_position, algorithm_input_data):
+        pass
 
 
 class Algorithm_inputdata():

@@ -24,15 +24,19 @@ def first_stage(algorithm_input_data,solution):
         order = random.choice(orders)
         Pickup = algorithm_input_data.OAs.loc[order,'Pickup']
         Deliver = algorithm_input_data.OAs.loc[order, 'Deliver']
-        is_insert_pass_D = 0  # 或许可以注掉
-        # 先插入 Pickup
-        for truck_ID, truck in solution.items():
+        is_insert_pass_D = 0
+        truck_IDs = list(solution.keys())
+        while truck_IDs:
+            truck_ID = random.choice(truck_IDs)
+            truck_IDs.remove(truck_ID)
+            truck = solution[truck_ID]
+            # 先插入 Pickup
             # # 简单顺序插入
             # is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert = order_insert_simple_in_order(truck, Pickup, Deliver, algorithm_input_data)
-            # # 随机插入
-            # is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert = order_insert_random(truck, Pickup, Deliver, algorithm_input_data)
-            # 贪心插入
-            is_insert_pass_D, truck_for_Deliver_insert = order_insert_greedy(truck, Pickup, Deliver, algorithm_input_data)
+            # 随机插入
+            is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert = order_insert_random(truck, Pickup, Deliver, algorithm_input_data)
+            # # 贪心插入
+            # is_insert_pass_D, truck_for_Deliver_insert = order_insert_greedy(truck, Pickup, Deliver, algorithm_input_data)
             if is_insert_pass_D:
                 truck_for_Deliver_insert.order.append(order)
                 solution[truck_ID] = truck_for_Deliver_insert
