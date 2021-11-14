@@ -140,9 +140,18 @@ if __name__ == '__main__' :
     algorithm_input_data = Algorithm_inputdata(path_of_file)
     # test_first_stage pass
     first_stage_solution = first_stage(algorithm_input_data)
-    output_to_picture('..//output//first_stage', first_stage_solution, algorithm_input_data)
     first_stage_solution[6] = Truck(6)
+    output_to_picture('..//output//first_stage', first_stage_solution, algorithm_input_data)
+    output_to_log('..//output//first_stage', first_stage_solution)
+
     # test_second_stage pass
     second_stage_solution = second_stage(algorithm_input_data, first_stage_solution)
     output_to_picture('..//output//second_stage', second_stage_solution, algorithm_input_data)
+    output_to_log('..//output//second_stage', second_stage_solution)
     print('finish')
+
+
+# todo notation here
+# 添加一辆新的无任何任务的车辆进解，在第二阶段可能会出现无法提出该车辆，其原因：
+# 将该车剔除后，使用LNS进行解的测试和改进，1 由于LNS的迭代次数的原因，可能会出现LNS无法破坏解后无法修复（将订单全部安排）
+# 初始解的插入算子和LNS的插入算子不一样
