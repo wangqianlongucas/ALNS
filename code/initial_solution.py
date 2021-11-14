@@ -7,13 +7,13 @@
 import random
 import copy
 import math
-
 import numpy as np
 
 from algorithm_data import Algorithm_inputdata, Truck
 from insert_order import *
 from removal_requests import *
 from insert_requests import *
+from output import *
 
 # first_stage
 def first_stage(algorithm_input_data):
@@ -135,14 +135,14 @@ def second_stage(algorithm_input_data,solution):
 
     return second_solution
 
-
 if __name__ == '__main__' :
     path_of_file = '..//data'
     algorithm_input_data = Algorithm_inputdata(path_of_file)
     # test_first_stage pass
     first_stage_solution = first_stage(algorithm_input_data)
-    first_stage_solution[10] = Truck(10)
+    output_to_picture('..//output//first_stage', first_stage_solution, algorithm_input_data)
+    first_stage_solution[6] = Truck(6)
     # test_second_stage pass
     second_stage_solution = second_stage(algorithm_input_data, first_stage_solution)
-
+    output_to_picture('..//output//second_stage', second_stage_solution, algorithm_input_data)
     print('finish')
