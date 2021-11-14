@@ -11,7 +11,7 @@ import numpy as np
 class Truck():
     def __init__(self, ID):
         self.id = ID
-        self.capacity = 1.5  # todo 最大载重，检查是否需要调参
+        self.capacity = 1 # todo 最大载重，检查是否需要调参
         self.origin = [0]
         self.end = [0]
         self.order = []
@@ -82,7 +82,7 @@ class Algorithm_inputdata():
         # 计算距离矩阵
         self.Distance_Mat = self.distance_matrix(self.Nodes)
         # 惩罚
-        self.M = 80
+        self.M = 800
 
     def distance_matrix(self,pd_data):
         list_include_index_etc = pd_data.values

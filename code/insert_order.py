@@ -78,12 +78,6 @@ def order_insert_random(truck,Pickup,Deliver,algorithm_input_data):
     return is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert if is_insert_pass_D else truck
 
 # 寻找最好的插入位置：second_objective
-# 所有卡车的行驶距离之和,未使用
-def second_objective_calculate(solution):
-    second_objective = 0
-    for truck_ID,truck in solution:
-        second_objective += truck.travel_distance_line_of_route[-1]
-    return second_objective
 
 def order_insert_greedy(truck,Pickup,Deliver,algorithm_input_data):
     # 初始化
@@ -91,7 +85,6 @@ def order_insert_greedy(truck,Pickup,Deliver,algorithm_input_data):
     second_objective_best = np.Inf
     is_insert_pass_Ds = [0]
 
-    is_insert_pass_D = 0
     Pickup_insert_positions = list(range(1, len(truck.route)))
     # 按前后顺序插入
     for position_P in Pickup_insert_positions:
