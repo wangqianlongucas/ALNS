@@ -6,11 +6,10 @@
 # 此模块定义单个需求插入方式
 import copy
 import random
-
-# 简单顺序插入
 import numpy as np
 
 
+# 简单顺序插入
 def order_insert_simple_in_order(truck,Pickup,Deliver,algorithm_input_data):
     is_insert_pass_D = 0
     Pickup_insert_positions = list(range(1, len(truck.route)))
@@ -41,6 +40,7 @@ def order_insert_simple_in_order(truck,Pickup,Deliver,algorithm_input_data):
         if is_insert_pass_D:
             break  # 结束Pickup插入循环
     return is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert if is_insert_pass_D else truck
+
 
 # 随机插入
 def order_insert_random(truck,Pickup,Deliver,algorithm_input_data):
@@ -77,8 +77,8 @@ def order_insert_random(truck,Pickup,Deliver,algorithm_input_data):
             break  # 结束Pickup插入循环
     return is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert if is_insert_pass_D else truck
 
-# 寻找最好的插入位置：second_objective
 
+# 寻找最好的插入位置：second_objective
 def order_insert_greedy(truck,Pickup,Deliver,algorithm_input_data):
     # 初始化
     truck_best = truck

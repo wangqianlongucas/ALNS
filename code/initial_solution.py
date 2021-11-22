@@ -15,6 +15,7 @@ from removal_requests import *
 from insert_requests import *
 from output import *
 
+
 # first_stage
 def first_stage(algorithm_input_data):
     # 初始化
@@ -28,7 +29,7 @@ def first_stage(algorithm_input_data):
     while orders:
         # 随机选择订单
         order = random.choice(orders)
-        Pickup = algorithm_input_data.OAs.loc[order,'Pickup']
+        Pickup = algorithm_input_data.OAs.loc[order, 'Pickup']
         Deliver = algorithm_input_data.OAs.loc[order, 'Deliver']
         is_insert_pass_D = 0
         truck_IDs = list(solution.keys())
@@ -40,7 +41,8 @@ def first_stage(algorithm_input_data):
             # # 简单顺序插入
             # is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert = order_insert_simple_in_order(truck, Pickup, Deliver, algorithm_input_data)
             # 随机插入
-            is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert = order_insert_random(truck, Pickup, Deliver, algorithm_input_data)
+            is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert = order_insert_random(truck, Pickup, Deliver,
+                                                                                               algorithm_input_data)
             # # 贪心插入
             # is_insert_pass_D, truck_for_Deliver_insert = order_insert_greedy(truck, Pickup, Deliver, algorithm_input_data)
             if is_insert_pass_D:  # 插入成功
@@ -53,7 +55,10 @@ def first_stage(algorithm_input_data):
             # 此时现有车辆均无法插入需求 order，需要新增加truck
             truck_ID_MAX += 1
             truck_new = Truck(truck_ID_MAX)
-            is_insert_pass_P, is_insert_pass_D, truck_new_for_Deliver_insert = order_insert_simple_in_order(truck_new, Pickup, Deliver, algorithm_input_data)
+            is_insert_pass_P, is_insert_pass_D, truck_new_for_Deliver_insert = order_insert_simple_in_order(truck_new,
+                                                                                                            Pickup,
+                                                                                                            Deliver,
+                                                                                                            algorithm_input_data)
 
             if is_insert_pass_D:
                 truck_new_for_Deliver_insert.order.append(order)
@@ -65,6 +70,7 @@ def first_stage(algorithm_input_data):
                     print(order, 'data时间设置不合理——从卡车出发点至Pickup点')
     return solution
 
+
 def LNS(solution, q, request_blank, num_of_iter, algorithm_input_data):
     # 初始化
     current_solution = copy.deepcopy(solution)
@@ -74,7 +80,8 @@ def LNS(solution, q, request_blank, num_of_iter, algorithm_input_data):
     best_objective = current_objective
     best_request_blank = current_request_blank
     # 初最高温
-    T_MAX = 10 * (sum(truck.travel_distance_line_of_route[-1] for truck in list(best_solution.values())) + algorithm_input_data.M * len(request_blank))
+    T_MAX = 10 * (sum(truck.travel_distance_line_of_route[-1] for truck in
+                      list(best_solution.values())) + algorithm_input_data.M * len(request_blank))
     T_MIN = 1
     iter = 1
     while iter <= num_of_iter or T_MAX <= T_MIN:
@@ -84,7 +91,8 @@ def LNS(solution, q, request_blank, num_of_iter, algorithm_input_data):
         insert_orders = current_request_blank + removal_orders
         insert_request_blank, insert_solution = greedy_insert(removal_solution, insert_orders, algorithm_input_data)
         # 计算目标
-        insert_objective = sum(truck.travel_distance_line_of_route[-1] for truck in list(insert_solution.values())) + algorithm_input_data.M * len(request_blank)
+        insert_objective = sum(truck.travel_distance_line_of_route[-1] for truck in
+                               list(insert_solution.values())) + algorithm_input_data.M * len(request_blank)
         # 更新最优解
         if insert_objective <= best_objective:
             best_objective = insert_objective
@@ -106,8 +114,9 @@ def LNS(solution, q, request_blank, num_of_iter, algorithm_input_data):
 
     return best_request_blank, best_solution
 
+
 # second_stage
-def second_stage(algorithm_input_data,solution):
+def second_stage(algorithm_input_data, solution):
     # 初始化
     second_solution = copy.deepcopy(solution)
     is_continue = 1 if len(list(second_solution.keys())) > 1 else 0
@@ -135,7 +144,8 @@ def second_stage(algorithm_input_data,solution):
 
     return second_solution
 
-if __name__ == '__main__' :
+
+if __name__ == '__main__':
     path_of_file = '..//data'
     algorithm_input_data = Algorithm_inputdata(path_of_file)
     # test_first_stage pass
@@ -149,8 +159,9 @@ if __name__ == '__main__' :
     output_to_picture('..//output//second_stage', second_stage_solution, algorithm_input_data)
     output_to_log('..//output//second_stage', second_stage_solution)
     print('finish')
-
-
+    relatedness = relatedness_calculate_all(first_stage_solution, algorithm_input_data)
+    relatedness_i_with_any = relatedness_calculate(first_stage_solution, 2, algorithm_input_data)
+    D, solution_shaw = shaw_removal(first_stage_solution, 3, 1000, algorithm_input_data)
 # todo notation here
 # 添加一辆新的无任何任务的车辆进解，在第二阶段可能会出现无法提出该车辆，其原因：
 # 将该车剔除后，使用LNS进行解的测试和改进，1 由于LNS的迭代次数的原因，可能会出现LNS无法破坏解后无法修复（将订单全部安排）

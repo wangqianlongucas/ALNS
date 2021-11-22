@@ -66,23 +66,27 @@ class Truck():
         self.travel_distance_line_of_route[insert_position + 1:] = [travel + travel_change for travel in self.travel_distance_line_of_route[insert_position + 1:]]
 
     def travel_distance_line_of_route_update_remove(self, remove_position, algorithm_input_data):
+        del self.travel_distance_line_of_route[remove_position]
         node_before, node = self.route[remove_position - 1], self.route[remove_position]
         travel_node = self.travel_distance_line_of_route[remove_position - 1] + algorithm_input_data.Distance_Mat[node_before,node]
         travel_change = self.travel_distance_line_of_route[remove_position] - travel_node
         # 更新移除点后的行驶距离
-        self.travel_distance_line_of_route[remove_position:] = [travel + travel_change for travel in self.travel_distance_line_of_route[remove_position:]]
+        self.travel_distance_line_of_route[remove_position:] = [travel - travel_change for travel in self.travel_distance_line_of_route[remove_position:]]
 
 class Algorithm_inputdata():
     # 初始化：读取数据和生成参数
     def __init__(self,path_of_file):
         # 读取订单数据和节点数据
         self.OAs = pd.read_csv(path_of_file + '\\OAs10.csv', index_col=0)
+        self.orders = list(self.OAs.loc[:, 'Pickup'])
         # Nodes[0]表示卡车出发点
         self.Nodes = pd.read_csv(path_of_file + '\\Nodes10.csv')
         # 计算距离矩阵
         self.Distance_Mat = self.distance_matrix(self.Nodes)
         # 惩罚
         self.M = 800
+        # 相似度系数
+        self.weight = {'d': 1, 'T': 1, 'l': 1, 'K': 1}
 
     def distance_matrix(self,pd_data):
         list_include_index_etc = pd_data.values
@@ -103,4 +107,4 @@ class Algorithm_inputdata():
 if __name__ == '__main__' :
     path_of_file = '..//data'
     algorithm_inputdata = Algorithm_inputdata(path_of_file)
-    truck = Truck(1,algorithm_inputdata.Nodes)
+    truck = Truck(1)
