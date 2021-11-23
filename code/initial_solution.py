@@ -158,10 +158,18 @@ if __name__ == '__main__':
     second_stage_solution = second_stage(algorithm_input_data, first_stage_solution)
     output_to_picture('..//output//second_stage', second_stage_solution, algorithm_input_data)
     output_to_log('..//output//second_stage', second_stage_solution)
+
+    # relatedness = relatedness_calculate_all(first_stage_solution, algorithm_input_data)
+    # relatedness_i_with_any = relatedness_calculate(first_stage_solution, 2, algorithm_input_data)
+    D, solution_shaw = shaw_removal(second_stage_solution, 3, 1000, algorithm_input_data)
+    delta_f_i_x_ik = delta_f_i_x_ik_calculate(solution_shaw, D, algorithm_input_data)
+    D_no, solution_regret = regret_insert(solution_shaw, D, 2, algorithm_input_data)
+    output_to_picture('..//output//solution_regret', solution_regret, algorithm_input_data)
+    output_to_log('..//output//solution_regret', solution_regret)
+    print(sum(truck.travel_distance_line_of_route[-1] for truck in list(first_stage_solution.values())))
+    print(sum(truck.travel_distance_line_of_route[-1] for truck in list(second_stage_solution.values())))
+    print(sum(truck.travel_distance_line_of_route[-1] for truck in list(solution_regret.values())))
     print('finish')
-    relatedness = relatedness_calculate_all(first_stage_solution, algorithm_input_data)
-    relatedness_i_with_any = relatedness_calculate(first_stage_solution, 2, algorithm_input_data)
-    D, solution_shaw = shaw_removal(first_stage_solution, 3, 1000, algorithm_input_data)
 # todo notation here
 # 添加一辆新的无任何任务的车辆进解，在第二阶段可能会出现无法提出该车辆，其原因：
 # 将该车剔除后，使用LNS进行解的测试和改进，1 由于LNS的迭代次数的原因，可能会出现LNS无法破坏解后无法修复（将订单全部安排）

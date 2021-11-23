@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 def output_to_picture(output_picture_path, solution, algorithm_input_data):
-    t_color = ['g--', 'r-', 'y--', 'g--', 'r-', 'y--', 'g--', 'r-', 'y--', 'g--', 'r-', 'y--', 'g--', 'r-', 'y--',
+    t_color = ['g--', 'r-', 'y--', 'b--', 'k-', 'c--', 'm--', 'r-', 'y--', 'g--', 'r-', 'y--', 'g--', 'r-', 'y--',
                'g--', 'r-', 'y--']
     plt.figure()
     # 所有节点

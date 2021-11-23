@@ -90,6 +90,8 @@ def relatedness_calculate(solution, order_i, algorithm_input_data):
                     if location in truck.route:
                         location_index = truck.route.index(location)
                         T[location_key] = truck.time_line[location_index]
+            if 'B_i' not in T.keys():
+                continue
             relatedness_T = abs(T['A_i'] - T['A_j']) + abs(T['B_i'] - T['B_j'])
             relatedness_l = abs(
                 algorithm_input_data.Nodes.loc[order_i, 'dm'] - algorithm_input_data.Nodes.loc[order_j, 'dm'])
@@ -114,7 +116,7 @@ def shaw_removal(solution, q, p, algorithm_input_data):
         for order_d in D:
             if order_d in list(relatedness_i_with_any.keys()):
                 del relatedness_i_with_any[order_d]
-        # 排序，数据类为[()...]
+        # 排序,升序，数据类为[()...]
         relatedness_i_with_any_sorted = sorted(relatedness_i_with_any.items(), key=lambda kv: (kv[1], kv[0]))
         y = random.random()
         new_choice = int((y**p) * len(relatedness_i_with_any_sorted))
