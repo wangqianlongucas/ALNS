@@ -86,7 +86,8 @@ class Algorithm_inputdata():
         # 惩罚
         self.M = 800
         # 相似度系数
-        self.weight = {'d': 1, 'T': 1, 'l': 1, 'K': 1}
+        self.weight = {'d': 9, 'T': 3, 'l': 2, 'K': 5}
+        self.sita = {'sita_1': 33, 'sita_2': 9, 'sita_3': 13}
 
     def distance_matrix(self,pd_data):
         list_include_index_etc = pd_data.values
