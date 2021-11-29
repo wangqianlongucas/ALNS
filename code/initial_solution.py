@@ -133,7 +133,10 @@ def second_stage(algorithm_input_data, solution):
             request_blank = truck_to_delete.order
             del second_solution_to_delete[truck_ID_to_delete]
             # 使用 LNS 算法安排request_blank中的订单
-            LNS_request_blank, LNS_solution = LNS(second_solution_to_delete, 10, request_blank, 40, algorithm_input_data)
+            # todo notation q is the number of removal orders and number_of_iter is the number of LNS iterations
+            number_of_removal_orders = 6
+            number_of_iter_LNS = 30
+            LNS_request_blank, LNS_solution = LNS(second_solution_to_delete, number_of_removal_orders, request_blank, number_of_iter_LNS, algorithm_input_data)
             # 如果所有订单均被安排——>break
             if not LNS_request_blank:
                 second_solution = LNS_solution
@@ -146,29 +149,37 @@ def second_stage(algorithm_input_data, solution):
 
 
 if __name__ == '__main__':
-    path_of_file = '..//data'
-    algorithm_input_data = Algorithm_inputdata(path_of_file)
+    number_of_orders = 10
+    path_of_file = '..//data_10'
+    algorithm_input_data = Algorithm_inputdata(path_of_file, number_of_orders)
+
     # test_first_stage pass
     first_stage_solution = first_stage(algorithm_input_data)
     first_stage_solution[6] = Truck(6)
     output_to_picture('..//output//first_stage', first_stage_solution, algorithm_input_data)
     output_to_log('..//output//first_stage', first_stage_solution)
+    print(sum(truck.travel_distance_line_of_route[-1] for truck in list(first_stage_solution.values())))
 
     # test_second_stage pass
     second_stage_solution = second_stage(algorithm_input_data, first_stage_solution)
     output_to_picture('..//output//second_stage', second_stage_solution, algorithm_input_data)
     output_to_log('..//output//second_stage', second_stage_solution)
+    print(sum(truck.travel_distance_line_of_route[-1] for truck in list(second_stage_solution.values())))
 
     # relatedness = relatedness_calculate_all(first_stage_solution, algorithm_input_data)
     # relatedness_i_with_any = relatedness_calculate(first_stage_solution, 2, algorithm_input_data)
-    D, solution_shaw = shaw_removal(second_stage_solution, 3, 1000, algorithm_input_data)
-    delta_f_i_x_ik = delta_f_i_x_ik_calculate(solution_shaw, D, algorithm_input_data)
-    D_no, solution_regret = regret_insert(solution_shaw, D, 2, algorithm_input_data)
+    D_shaw, solution_shaw = shaw_removal(second_stage_solution, 3, 1000, algorithm_input_data)
+    # delta_f_i_x_ik = delta_f_i_x_ik_calculate(solution_shaw, D_shaw, algorithm_input_data)
+    D_no_regret, solution_regret = regret_insert(solution_shaw, D_shaw, 2, algorithm_input_data)
     output_to_picture('..//output//solution_regret', solution_regret, algorithm_input_data)
     output_to_log('..//output//solution_regret', solution_regret)
-    print(sum(truck.travel_distance_line_of_route[-1] for truck in list(first_stage_solution.values())))
-    print(sum(truck.travel_distance_line_of_route[-1] for truck in list(second_stage_solution.values())))
     print(sum(truck.travel_distance_line_of_route[-1] for truck in list(solution_regret.values())))
+
+    D_worst, solution_worst = worst_removal(second_stage_solution, 3, 1000, algorithm_input_data)
+    D_no_worst, solution_worst = regret_insert(solution_worst, D_worst, 2, algorithm_input_data)
+    output_to_picture('..//output//solution_worst', solution_worst, algorithm_input_data)
+    output_to_log('..//output//solution_worst', solution_worst)
+    print(sum(truck.travel_distance_line_of_route[-1] for truck in list(solution_worst.values())))
     print('finish')
 # todo notation here
 # 添加一辆新的无任何任务的车辆进解，在第二阶段可能会出现无法提出该车辆，其原因：

@@ -8,34 +8,34 @@ import copy
 from removal_order import *
 
 
-# def random_removal(solution, q, algorithm_input_data):
-#     removal_solution = copy.deepcopy(solution)
-#     q_orders = []
-#     while len(q_orders) < q:
-#         # 随机选择车辆
-#         truck_remove_order = random.choice(list(removal_solution.values()))
-#         # 订单移除
-#         if truck_remove_order.order:
-#             # 随机选择订单
-#             q_order = random.choice(truck_remove_order.order)
-#             q_orders.append(q_order)
-#             truck_remove_order.order.remove(q_order)
-#             # 更新其他参数
-#             Pickup = algorithm_input_data.OAs.loc[q_order, 'Pickup']
-#             Pickup_position = truck_remove_order.route.index(Pickup)
-#             truck_remove_order.route.remove(Pickup)
-#             truck_remove_order.travel_distance_line_of_route_update_remove(Pickup_position, algorithm_input_data)
-#
-#             Deliver = algorithm_input_data.OAs.loc[q_order, 'Deliver']
-#             Deliver_position = truck_remove_order.route.index(Deliver)
-#             truck_remove_order.route.remove(Deliver)
-#             truck_remove_order.travel_distance_line_of_route_update_remove(Deliver_position, algorithm_input_data)
-#             # 时间和载重线更新
-#             truck_remove_order.check_and_update(Pickup_position, algorithm_input_data)
-#
-#             removal_solution[truck_remove_order.id] = truck_remove_order
-#
-#     return q_orders, removal_solution
+def random_removal(solution, q, algorithm_input_data):
+    removal_solution = copy.deepcopy(solution)
+    q_orders = []
+    while len(q_orders) < q:
+        # 随机选择车辆
+        truck_remove_order = random.choice(list(removal_solution.values()))
+        # 订单移除
+        if truck_remove_order.order:
+            # 随机选择订单
+            q_order = random.choice(truck_remove_order.order)
+            q_orders.append(q_order)
+            truck_remove_order.order.remove(q_order)
+            # 更新其他参数
+            Pickup = algorithm_input_data.OAs.loc[q_order, 'Pickup']
+            Pickup_position = truck_remove_order.route.index(Pickup)
+            truck_remove_order.route.remove(Pickup)
+            truck_remove_order.travel_distance_line_of_route_update_remove(Pickup_position, algorithm_input_data)
+
+            Deliver = algorithm_input_data.OAs.loc[q_order, 'Deliver']
+            Deliver_position = truck_remove_order.route.index(Deliver)
+            truck_remove_order.route.remove(Deliver)
+            truck_remove_order.travel_distance_line_of_route_update_remove(Deliver_position, algorithm_input_data)
+            # 时间和载重线更新
+            truck_remove_order.check_and_update(Pickup_position, algorithm_input_data)
+
+            removal_solution[truck_remove_order.id] = truck_remove_order
+
+    return q_orders, removal_solution
 
 
 def relatedness_calculate_all(solution, algorithm_input_data):
@@ -126,23 +126,23 @@ def shaw_removal(solution, q, p, algorithm_input_data):
     return D, solution_shaw
 
 
-def random_removal(solution, q, algorithm_input_data):  # todo 这里还没加入p，先自己设定，之后再直接在initial_solution这个文件中进行修改
-    p = 3
+def worst_removal(solution, q, p, algorithm_input_data):
+    p = p
     removal_solution = copy.deepcopy(solution)
     # 记录所有移除的订单
     q_orders = []
     # 记录所有order的的cost
     all_order_cost = []
-    # todo 数据结构为[{truck_id:[order_id,order removal cost]}]
-    # todo 为了计算简便数据结构变更为[[truck_id,order_id,order removal cost]]
+    #  数据结构为[{truck_id:[order_id,order removal cost]}]
+    #  为了计算简便数据结构变更为[[truck_id,order_id,order removal cost]]
     for truck_id, truck_values in solution.items():
-        print('truck_ID:', truck_id)
-        print('当前车辆的索引为:', truck_id)
+        # print('truck_ID:', truck_id)
+        # print('当前车辆的索引为:', truck_id)
         truck_distance_before = truck_values.travel_distance_line_of_route[-1]
-        print('当前卡车行驶的距离：', truck_distance_before)
+        # print('当前卡车行驶的距离：', truck_distance_before)
         for ii in truck_values.order:
             # 索引
-            print('%s车辆的订单为' % truck_id, ii)
+            # print('%s车辆的订单为' % truck_id, ii)
             truck_values_can_change = copy.deepcopy(truck_values)
             # 计算去掉该点之后的卡车行驶距离
             Pickup = algorithm_input_data.OAs.loc[ii, 'Pickup']
@@ -150,23 +150,23 @@ def random_removal(solution, q, algorithm_input_data):  # todo 这里还没加�
             truck_values_can_change.route.remove(Pickup)
             truck_values_can_change.travel_distance_line_of_route_update_remove(Pickup_position, algorithm_input_data)
             truck_distance_after_pickup = truck_values_can_change.travel_distance_line_of_route[-1]
-            print('去掉订单%s的pickup点后车辆%s的行驶距离为' % (ii, truck_id), truck_distance_after_pickup)
+            # print('去掉订单%s的pickup点后车辆%s的行驶距离为' % (ii, truck_id), truck_distance_after_pickup)
             Deliver = algorithm_input_data.OAs.loc[ii, 'Deliver']
             Deliver_position = truck_values_can_change.route.index(Deliver)
             truck_values_can_change.route.remove(Deliver)
             truck_values_can_change.travel_distance_line_of_route_update_remove(Deliver_position, algorithm_input_data)
             truck_distance_after = truck_values_can_change.travel_distance_line_of_route[-1]
-            print('去掉订单%s后车辆%s的行驶距离为' % (ii, truck_id), truck_distance_after)
+            # print('去掉订单%s后车辆%s的行驶距离为' % (ii, truck_id), truck_distance_after)
             cost_ii = [truck_id, ii, truck_distance_before - truck_distance_after]
             all_order_cost.append(cost_ii)
         # truck_cost_dict[truck_id]=each_truck_cost
         # all_order_cost.append(truck_cost_dict)
-    print('未排序前的cost：', all_order_cost)
+    # print('未排序前的cost：', all_order_cost)
     # 按照cost值从小到大排序
     all_order_cost = sorted(all_order_cost, key=(lambda x: x[2]))
-    print('排序后的cost：', all_order_cost)
+    # print('排序后的cost：', all_order_cost)
     planned_order = [all_order_cost[i][1] for i in range(len(all_order_cost))]
-    print('排序好的已经规划的订单：', planned_order)
+    # print('排序好的已经规划的订单：', planned_order)
 
     while len(q_orders) < q:
         # 随机生成一个[0,1)之间的小数
@@ -175,19 +175,19 @@ def random_removal(solution, q, algorithm_input_data):  # todo 这里还没加�
         # 在已经排好序的订单中随机选择车辆 索引是在排序好的订单里得到的
         order_index = int((y ** p) * len(planned_order))
         q_order = planned_order[order_index]
-        print('打算移除的order为：',q_order)
+        # print('打算移除的order为：',q_order)
         truck_id_to_remove_order = all_order_cost[order_index][0]
-        print('打算移除的order所在的车辆为：',truck_id_to_remove_order)
+        # print('打算移除的order所在的车辆为：',truck_id_to_remove_order)
         q_orders.append(q_order)
         all_order_cost.pop(order_index)
         # 移除当前选中的订单
         planned_order.remove(q_order)
         # truck_remove_order = random.choice(list(removal_solution.values()))
         truck_remove_order = removal_solution[truck_id_to_remove_order]
-        print(truck_remove_order)
+        # print(truck_remove_order)
         # 订单移除
         if truck_remove_order.order:
-            print('第188行的order：',truck_remove_order.order)
+            # print('第188行的order：',truck_remove_order.order)
             # 随机选择订单
             truck_remove_order.order.remove(q_order)
             # 更新其他参数
@@ -211,7 +211,7 @@ def random_removal(solution, q, algorithm_input_data):  # todo 这里还没加�
             truck_distance_before = truck_values.travel_distance_line_of_route[-1]
             for ii in truck_values.order:
                 # 索引
-                print('%s车辆的订单为' % truck_id, ii)
+                # print('%s车辆的订单为' % truck_id, ii)
                 truck_values_can_change = copy.deepcopy(truck_values)
                 # 计算去掉该点之后的卡车行驶距离
                 Pickup = algorithm_input_data.OAs.loc[ii, 'Pickup']
@@ -220,20 +220,20 @@ def random_removal(solution, q, algorithm_input_data):  # todo 这里还没加�
                 truck_values_can_change.travel_distance_line_of_route_update_remove(Pickup_position,
                                                                                     algorithm_input_data)
                 truck_distance_after_pickup = truck_values_can_change.travel_distance_line_of_route[-1]
-                print('去掉订单%s的pickup点后车辆%s的行驶距离为' % (ii, truck_id), truck_distance_after_pickup)
+                # print('去掉订单%s的pickup点后车辆%s的行驶距离为' % (ii, truck_id), truck_distance_after_pickup)
                 Deliver = algorithm_input_data.OAs.loc[ii, 'Deliver']
                 Deliver_position = truck_values_can_change.route.index(Deliver)
                 truck_values_can_change.route.remove(Deliver)
                 truck_values_can_change.travel_distance_line_of_route_update_remove(Deliver_position,
                                                                                     algorithm_input_data)
                 truck_distance_after = truck_values_can_change.travel_distance_line_of_route[-1]
-                print('去掉订单%s后车辆%s的行驶距离为' % (ii, truck_id), truck_distance_after)
+                # print('去掉订单%s后车辆%s的行驶距离为' % (ii, truck_id), truck_distance_after)
                 cost_ii_change = truck_distance_before - truck_distance_after
                 index_order = planned_order.index(ii)
                 all_order_cost[index_order][2] = cost_ii_change
-            print('未排序前的cost：', all_order_cost)
+            # print('未排序前的cost：', all_order_cost)
             # 按照cost值从小到大排序
             all_order_cost = sorted(all_order_cost, key=(lambda x: x[2]))
-            print('排序后的cost：', all_order_cost)
+            # print('排序后的cost：', all_order_cost)
             planned_order = [all_order_cost[i][1] for i in range(len(all_order_cost))]
     return q_orders, removal_solution
