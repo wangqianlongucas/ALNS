@@ -75,12 +75,12 @@ class Truck():
 
 class Algorithm_inputdata():
     # 初始化：读取数据和生成参数
-    def __init__(self,path_of_file):
+    def __init__(self, path_of_file, number_of_orders):
         # 读取订单数据和节点数据
-        self.OAs = pd.read_csv(path_of_file + '\\OAs10.csv', index_col=0)
+        self.OAs = pd.read_csv(path_of_file + '\\OAs%s.csv'%number_of_orders, index_col=0)
         self.orders = list(self.OAs.loc[:, 'Pickup'])
         # Nodes[0]表示卡车出发点
-        self.Nodes = pd.read_csv(path_of_file + '\\Nodes10.csv')
+        self.Nodes = pd.read_csv(path_of_file + '\\Nodes%s.csv'%number_of_orders)
         # 计算距离矩阵
         self.Distance_Mat = self.distance_matrix(self.Nodes)
         # 惩罚

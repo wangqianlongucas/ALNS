@@ -133,7 +133,7 @@ def second_stage(algorithm_input_data, solution):
             request_blank = truck_to_delete.order
             del second_solution_to_delete[truck_ID_to_delete]
             # 使用 LNS 算法安排request_blank中的订单
-            LNS_request_blank, LNS_solution = LNS(second_solution_to_delete, 3, request_blank, 10, algorithm_input_data)
+            LNS_request_blank, LNS_solution = LNS(second_solution_to_delete, 10, request_blank, 40, algorithm_input_data)
             # 如果所有订单均被安排——>break
             if not LNS_request_blank:
                 second_solution = LNS_solution
