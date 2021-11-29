@@ -38,11 +38,11 @@ def first_stage(algorithm_input_data):
             truck_ID = random.choice(truck_IDs)
             truck_IDs.remove(truck_ID)
             truck = solution[truck_ID]
-            # # 简单顺序插入
-            # is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert = order_insert_simple_in_order(truck, Pickup, Deliver, algorithm_input_data)
-            # 随机插入
-            is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert = order_insert_random(truck, Pickup, Deliver,
-                                                                                               algorithm_input_data)
+            # 简单顺序插入
+            is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert = order_insert_simple_in_order(truck, Pickup, Deliver, algorithm_input_data)
+            # # 随机插入
+            # is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert = order_insert_random(truck, Pickup, Deliver,
+            #                                                                                    algorithm_input_data)
             # # 贪心插入
             # is_insert_pass_D, truck_for_Deliver_insert = order_insert_greedy(truck, Pickup, Deliver, algorithm_input_data)
             if is_insert_pass_D:  # 插入成功
@@ -135,7 +135,7 @@ def second_stage(algorithm_input_data, solution):
             # 使用 LNS 算法安排request_blank中的订单
             # todo notation q is the number of removal orders and number_of_iter is the number of LNS iterations
             number_of_removal_orders = 6
-            number_of_iter_LNS = 30
+            number_of_iter_LNS = 50
             LNS_request_blank, LNS_solution = LNS(second_solution_to_delete, number_of_removal_orders, request_blank, number_of_iter_LNS, algorithm_input_data)
             # 如果所有订单均被安排——>break
             if not LNS_request_blank:

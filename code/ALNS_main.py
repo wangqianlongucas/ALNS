@@ -127,12 +127,12 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
             # select_pair = rouletteselectionmethod(grades)
             select_pair = random.choice(pair_of_removal_and_insert)
             removal_method, insert_method = select_pair[0], select_pair[1]
-            # 破坏
-            number_of_removal_order = 3
+            # removal todo here number_of_removal_order should be adoptive with the number of orders
+            number_of_removal_order = 6
             # p 控制随机程度(shaw,worst)
             p = 100
             request_blank_removal, removal_solution = removal(removal_method, current_solution, number_of_removal_order, p, algorithm_input_data)
-            # 修复
+            # insert
             request_blank += request_blank_removal
             regret_level = 2
             ALNS_solution['insert']['request_blank'], ALNS_solution['insert']['solution'] = insert(insert_method, removal_solution, request_blank, regret_level, algorithm_input_data)
