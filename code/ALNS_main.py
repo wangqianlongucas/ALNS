@@ -14,36 +14,57 @@ from removal_requests import *
 from insert_requests import *
 
 
-# 区间定位函数：二分法，用于轮盘赌选择法
-def dr_index(r, Q_list):
-    up_index = len(Q_list) - 1  # 指数减一
-    low_index = 0
-    Q_list_half_index = up_index
-    while up_index - low_index > 1:
-        Q_list_half_index = int((up_index + low_index) / 2)
-        if r <= Q_list[Q_list_half_index]:
-            up_index = Q_list_half_index
-        else:
-            low_index = Q_list_half_index
-    return low_index
-
-
-# 轮盘赌选择移除-插入方法
+# 轮盘赌选择移除-插入方法  todo by YJY 2021/11/30
 def roulette_selection_method(grades):
-    grade_sum = sum(grades)
-    P_list = list(np.array(grades) / grade_sum)
-    Q_list = [0]
-    for q in range(len(P_list)):
-        Q_list.append(sum(P_list[0:q + 1]))
-    r = random.random()
-    index_dr = dr_index(r, Q_list)
-    print(P_list)
-    print(Q_list)
-    print(r)
-    print(index_dr)
-    destroy_method = int(index_dr / 3) + 1  # 3为修复方法的个数
-    repair_method = index_dr % 3 + 1  # 3为破坏方法的个数
-    return destroy_method, repair_method, index_dr
+    grades_by_using_rsm = []
+    grades_pair_by_using_rsm = []
+    for pair, grade in grades.items():
+        grades_by_using_rsm.append(grade['grade'][-1])
+        grades_pair_by_using_rsm.append(pair)
+    grade_sum = sum(grades_by_using_rsm)
+    P_list = list(np.array(grades_by_using_rsm) / grade_sum)
+    Q_list = []
+    i = 0
+    while i < len(P_list):
+        # 累积概率
+        sum_prob = 0
+        select_prob = np.random.rand()
+        # print('随机生成的选择概率为select_prob', select_prob)
+        for j in range(0, len(P_list)):
+            sum_prob = P_list[j] + sum_prob
+            # sum_prob = (fitness[j] - fitness.min()) / (fitness.sum() - POP_size * fitness.min()) + sum_prob
+            if sum_prob > select_prob:
+                # print("当前适应度的值的和", sum_prob)
+                # print(j)
+                # 存放的是索引号
+                Q_list.append(j)
+                i = i + 1
+                break
+            else:
+                continue
+
+    # 想找到出现次数最多的索引，使用字典去计数
+    i = 0
+    Q_list.sort()
+    index_dic = []
+    while i < len(Q_list):
+        num_ii = Q_list.count(Q_list[i])
+        num_dic = [Q_list[i], num_ii]
+        index_dic.append(num_dic)
+        i += num_ii
+    print(index_dic)
+
+    i_index = 0
+    value_upper = 0
+    for item in index_dic:
+        # print(item)
+        if item[1] > value_upper:
+            i_index = item[0]
+            value_upper = item[1]
+    # print(i_index)
+    # 返回的是轮盘赌选择的插入移除算子对应的索引
+    select_pair = grades_pair_by_using_rsm[i_index]
+    return select_pair
 
 
 # 更新得分,others函数
@@ -124,11 +145,12 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
             request_blank = ALNS_solution['current']['request_blank']
 
             # # 轮盘赌选择法 选择
-            # select_pair = rouletteselectionmethod(grades)
-            select_pair = random.choice(pair_of_removal_and_insert)
+            select_pair = roulette_selection_method(grades)
+            print('输出grades：',grades)
+            # select_pair = random.choice(pair_of_removal_and_insert)
             removal_method, insert_method = select_pair[0], select_pair[1]
             # removal todo here number_of_removal_order should be adoptive with the number of orders
-            number_of_removal_order = 6
+            number_of_removal_order = 3
             # p 控制随机程度(shaw,worst)
             p = 100
             request_blank_removal, removal_solution = removal(removal_method, current_solution, number_of_removal_order, p, algorithm_input_data)
@@ -149,8 +171,8 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
 
 if __name__ == '__main__':
     # 初始化
-    number_of_orders = 20
-    path_of_file = '..//data_20'
+    number_of_orders = 10
+    path_of_file = '..//data_10'
     algorithm_input_data = Algorithm_inputdata(path_of_file, number_of_orders)
     # 生成初始解
     first_stage_solution = first_stage(algorithm_input_data)
@@ -172,8 +194,11 @@ if __name__ == '__main__':
     # todo regret_insert has problem
     pair_of_removal_and_insert = [('random', 'greedy'), ('shaw', 'greedy'), ('worst', 'greedy')]
     # todo notation: here second_stage_solution should be complete
-    number_of_iter = 30
-    number_of_segment_iter = 10
+    # number_of_iter = 30
+    # number_of_segment_iter = 10
+    # todo 此处先运行，segment以及迭代次数后续需要调整 by YJY 2021/11/30
+    number_of_iter = 10
+    number_of_segment_iter = 4
     ALNS_solution, grades = ALNS(second_stage_solution, pair_of_removal_and_insert, number_of_iter, number_of_segment_iter, algorithm_input_data)
     ALNS_best_sulution = ALNS_solution['best']['solution']
     ALNS_solution_objective = ALNS_solution['best']['objective']

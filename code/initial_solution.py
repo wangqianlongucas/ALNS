@@ -134,8 +134,8 @@ def second_stage(algorithm_input_data, solution):
             del second_solution_to_delete[truck_ID_to_delete]
             # 使用 LNS 算法安排request_blank中的订单
             # todo notation q is the number of removal orders and number_of_iter is the number of LNS iterations
-            number_of_removal_orders = 6
-            number_of_iter_LNS = 50
+            number_of_removal_orders = 3
+            number_of_iter_LNS = 10
             LNS_request_blank, LNS_solution = LNS(second_solution_to_delete, number_of_removal_orders, request_blank, number_of_iter_LNS, algorithm_input_data)
             # 如果所有订单均被安排——>break
             if not LNS_request_blank:
