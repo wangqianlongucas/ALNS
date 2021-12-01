@@ -174,7 +174,7 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
 if __name__ == '__main__':
     # 初始化
     number_of_orders = 15
-    path_of_file = '..//data_15_new_2'
+    path_of_file = '..//data_output//data_15_new_2'
     algorithm_input_data = Algorithm_inputdata(path_of_file, number_of_orders)
 
     # 生成初始解
