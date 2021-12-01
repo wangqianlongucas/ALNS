@@ -14,6 +14,7 @@ from insert_order import *
 from removal_requests import *
 from insert_requests import *
 from output import *
+from file_create import *
 
 
 # first_stage
@@ -116,7 +117,7 @@ def LNS(solution, q, request_blank, num_of_iter, algorithm_input_data):
 
 
 # second_stage
-def second_stage(algorithm_input_data, solution):
+def second_stage(algorithm_input_data, solution, number_of_removal_orders, number_of_iter_LNS):
     # 初始化
     second_solution = copy.deepcopy(solution)
     is_continue = 1 if len(list(second_solution.keys())) > 1 else 0
@@ -133,9 +134,6 @@ def second_stage(algorithm_input_data, solution):
             request_blank = truck_to_delete.order
             del second_solution_to_delete[truck_ID_to_delete]
             # 使用 LNS 算法安排request_blank中的订单
-            # todo notation q is the number of removal orders and number_of_iter is the number of LNS iterations
-            number_of_removal_orders = 3
-            number_of_iter_LNS = 10
             LNS_request_blank, LNS_solution = LNS(second_solution_to_delete, number_of_removal_orders, request_blank, number_of_iter_LNS, algorithm_input_data)
             # 如果所有订单均被安排——>break
             if not LNS_request_blank:
@@ -156,12 +154,16 @@ if __name__ == '__main__':
     # test_first_stage pass
     first_stage_solution = first_stage(algorithm_input_data)
     first_stage_solution[6] = Truck(6)
-    output_to_picture('..//output//first_stage', first_stage_solution, algorithm_input_data)
-    output_to_log('..//output//first_stage', first_stage_solution)
+    first_stage_solution_output_path = path_of_file + '//output//first_stage'
+    mkdir(first_stage_solution_output_path)
+    output_to_picture(first_stage_solution_output_path, first_stage_solution, algorithm_input_data)
+    output_to_log(first_stage_solution_output_path, first_stage_solution)
     print(sum(truck.travel_distance_line_of_route[-1] for truck in list(first_stage_solution.values())))
 
     # test_second_stage pass
-    second_stage_solution = second_stage(algorithm_input_data, first_stage_solution)
+    number_of_removal_orders = int(0.3 * len(algorithm_input_data.orders))
+    number_of_iter_LNS = 20
+    second_stage_solution = second_stage(algorithm_input_data, first_stage_solution, number_of_removal_orders, number_of_iter_LNS)
     output_to_picture('..//output//second_stage', second_stage_solution, algorithm_input_data)
     output_to_log('..//output//second_stage', second_stage_solution)
     print(sum(truck.travel_distance_line_of_route[-1] for truck in list(second_stage_solution.values())))
