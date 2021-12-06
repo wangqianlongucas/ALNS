@@ -39,11 +39,11 @@ def first_stage(algorithm_input_data):
             truck_ID = random.choice(truck_IDs)
             truck_IDs.remove(truck_ID)
             truck = solution[truck_ID]
-            # 简单顺序插入
-            is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert = order_insert_simple_in_order(truck, Pickup, Deliver, algorithm_input_data)
-            # # 随机插入
-            # is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert = order_insert_random(truck, Pickup, Deliver,
-            #                                                                                    algorithm_input_data)
+            # # 简单顺序插入
+            # is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert = order_insert_simple_in_order(truck, Pickup, Deliver, algorithm_input_data)
+            # 随机插入
+            is_insert_pass_P, is_insert_pass_D, truck_for_Deliver_insert = order_insert_random(truck, Pickup, Deliver,
+                                                                                               algorithm_input_data)
             # # 贪心插入
             # is_insert_pass_D, truck_for_Deliver_insert = order_insert_greedy(truck, Pickup, Deliver, algorithm_input_data)
             if is_insert_pass_D:  # 插入成功
@@ -85,10 +85,14 @@ def LNS(solution, q, request_blank, num_of_iter, algorithm_input_data):
                       list(best_solution.values())) + algorithm_input_data.M * len(request_blank))
     T_MIN = 1
     iter = 1
-    while iter <= num_of_iter or T_MAX <= T_MIN:
+    while iter <= num_of_iter and T_MAX >= T_MIN:
+        # print('LNS_internal_itrer:', iter)
         # 订单移除
-        removal_orders, removal_solution = random_removal(current_solution, q, algorithm_input_data)
+        # print('random_removal')
+        q_else = max(q - len(current_request_blank), int(0.5 * q))
+        removal_orders, removal_solution = random_removal(current_solution, q_else, algorithm_input_data)
         # 订单插入
+        # print('greedy_insert')
         insert_orders = current_request_blank + removal_orders
         insert_request_blank, insert_solution = greedy_insert(removal_solution, insert_orders, algorithm_input_data)
         # 计算目标
@@ -101,15 +105,15 @@ def LNS(solution, q, request_blank, num_of_iter, algorithm_input_data):
             best_request_blank = insert_request_blank
         # 模拟退火接受准则更新当前解
         if insert_objective <= current_objective:
-            current_solution = insert_solution
-            current_objective = insert_objective
-            current_request_blank = insert_request_blank
+            current_solution = copy.deepcopy(insert_solution)
+            current_objective = copy.deepcopy(insert_objective)
+            current_request_blank = copy.deepcopy(insert_request_blank)
         else:
             insert_accept_sa = random.random()
             if insert_accept_sa <= math.exp(-(insert_objective - current_objective) / T_MAX):
-                current_solution = insert_solution
-                current_objective = insert_objective
-                current_request_blank = insert_request_blank
+                current_solution = copy.deepcopy(insert_solution)
+                current_objective = copy.deepcopy(insert_objective)
+                current_request_blank = copy.deepcopy(insert_request_blank)
         iter += 1
         T_MAX = T_MAX * 0.95
 
@@ -121,6 +125,7 @@ def second_stage(algorithm_input_data, solution, number_of_removal_orders, numbe
     # 初始化
     second_solution = copy.deepcopy(solution)
     is_continue = 1 if len(list(second_solution.keys())) > 1 else 0
+    LNS_try = 1
     while is_continue:
         list_truck_ID = list(second_solution.keys())
         while list_truck_ID:
@@ -134,7 +139,12 @@ def second_stage(algorithm_input_data, solution, number_of_removal_orders, numbe
             request_blank = truck_to_delete.order
             del second_solution_to_delete[truck_ID_to_delete]
             # 使用 LNS 算法安排request_blank中的订单
+            print('LNS_try:', LNS_try, truck_ID_to_delete, request_blank)
+            LNS_try += 1
             LNS_request_blank, LNS_solution = LNS(second_solution_to_delete, number_of_removal_orders, request_blank, number_of_iter_LNS, algorithm_input_data)
+            LNS_objective = sum(truck.travel_distance_line_of_route[-1] for truck in
+                list(LNS_solution.values())) + algorithm_input_data.M * len(LNS_request_blank)
+            print(LNS_objective,LNS_request_blank)
             # 如果所有订单均被安排——>break
             if not LNS_request_blank:
                 second_solution = LNS_solution

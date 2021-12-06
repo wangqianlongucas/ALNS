@@ -45,6 +45,8 @@ def greedy_insert(solution, request_blank, algorithm_input_data):
 
         if best_insert_order:
             insert_orders.remove(best_insert_order)
+            # print('----------------')
+            # print(insert_orders)
             best_insert_solution = best_insert_solution_order
         else:
             is_continue = 0

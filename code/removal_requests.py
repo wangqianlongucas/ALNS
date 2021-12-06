@@ -12,6 +12,7 @@ def random_removal(solution, q, algorithm_input_data):
     removal_solution = copy.deepcopy(solution)
     q_orders = []
     while len(q_orders) < q:
+        # print(q_orders)
         # 随机选择车辆
         truck_remove_order = random.choice(list(removal_solution.values()))
         # 订单移除
