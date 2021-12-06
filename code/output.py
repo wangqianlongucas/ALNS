@@ -40,3 +40,26 @@ def output_to_log(output_log_path, solution):
             txt_write += 'capacity_line:' + str(truck.capacity_line) + '\n'
             txt_write += 'travel_distance_line_of_route:' + str(truck.travel_distance_line_of_route) + '\n\n'
             txt.write(txt_write)
+
+
+def ALNS_output(grades, ALNS_best_objectives, output_picture_path):
+    # part 1 算子得分曲线
+    p_color = ['g--', 'r-', 'y--', 'b--', 'k-', 'c--', 'm--', 'r-', 'y--', 'g--', 'r-', 'y--', 'g--', 'r-', 'y--',
+               'g--', 'r-', 'y--']
+    plt.figure()
+    p_index = 0
+    p_legend_name = []
+    p_legend = []
+    for pair_key, pair in grades.items():
+        p_legend_name.append(str(pair_key))
+        p = plt.plot(pair['segment'], pair['grade'], p_color[p_index], linewidth=0.5)
+        p_legend += p
+        p_index += 1
+    plt.legend(p_legend, p_legend_name, loc='upper left')
+    plt.savefig(output_picture_path + '\\grades.png', dpi=600)
+
+    # part 2 目标下降曲线
+    plt.figure()
+    plt.plot(list(range(1, len(ALNS_best_objectives) + 1)), ALNS_best_objectives, linewidth=0.5)
+    plt.savefig(output_picture_path + '\\ALNS_best_objectives.png', dpi=600)
+
