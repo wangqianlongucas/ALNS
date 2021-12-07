@@ -117,7 +117,7 @@ def LNS(solution, q, request_blank, num_of_iter, algorithm_input_data):
                 current_objective = copy.deepcopy(insert_objective)
                 current_request_blank = copy.deepcopy(insert_request_blank)
         iter += 1
-        T_MAX = T_MAX * 0.95
+        T_MAX = T_MAX * 0.995
 
     return best_request_blank, best_solution
 

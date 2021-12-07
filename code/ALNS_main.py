@@ -185,7 +185,7 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
                                                        list(ALNS_solution['insert']['solution'].values())) + algorithm_input_data.M * len(ALNS_solution['insert']['request_blank'])
             ALNS_solution, grades = update_grades_and_others(ALNS_solution, select_pair, grades, segment, algorithm_input_data, T_MAX)
             ALNS_best_objectives.append(ALNS_solution['best']['objective'])
-            T_MAX = 0.95 * T_MAX
+            T_MAX = 0.9999 * T_MAX
             if T_MAX < T_MIN:
                 print('segment_%s:T_MAX < T_MIN' % segment)
                 break
@@ -194,8 +194,8 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
 
 if __name__ == '__main__':
     # 初始化
-    number_of_orders = 30
-    path_of_file = '..//data_output//data_30_new_2'
+    number_of_orders = 50
+    path_of_file = '..//data_output//data_50'
     algorithm_input_data = Algorithm_inputdata(path_of_file, number_of_orders)
 
     # 生成初始解
@@ -210,7 +210,7 @@ if __name__ == '__main__':
 
     # 初始解提升（使用LNS算法减少最小使用车辆和第二目标）
     number_of_removal_orders = int(0.3 * len(algorithm_input_data.orders))
-    number_of_iter_LNS = 100
+    number_of_iter_LNS = 500
     second_stage_solution = second_stage(algorithm_input_data, first_stage_solution, number_of_removal_orders, number_of_iter_LNS)
     second_stage_solution_output_path = path_of_file + '//output//second_stage'
     mkdir(second_stage_solution_output_path)
@@ -226,8 +226,8 @@ if __name__ == '__main__':
     # todo regret_insert has problem
     pair_of_removal_and_insert = [('random', 'greedy'), ('shaw', 'greedy'), ('worst', 'greedy')]
     # todo notation: here second_stage_solution should be complete
-    number_of_iter_ALNS = 1000
-    number_of_segment_iter = 25
+    number_of_iter_ALNS = 25000
+    number_of_segment_iter = 200
     ALNS_solution, grades, ALNS_best_objectives = ALNS(second_stage_solution, pair_of_removal_and_insert, number_of_iter_ALNS, number_of_segment_iter, number_of_removal_orders, algorithm_input_data)
     ALNS_best_sulution = ALNS_solution['best']['solution']
     ALNS_solution_objective = ALNS_solution['best']['objective']
