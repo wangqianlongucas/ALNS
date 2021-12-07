@@ -10,14 +10,14 @@ import math
 class Data_parameter():
     def __init__(self,path_of_file):
         # 订单数量
-        self.no = 15  # 个
+        self.no = 30  # 个
         # 配送员中心数量
         self.np = 1  # 配送中心个数
         # 订单分布半径，直径为2*R
         self.R = 5  # 千米
         self.distance_P_and_D_max = 3
         # 订单时间窗长度
-        self.TWL = 0.6  # 小时
+        self.TWL = 0.5  # 小时
         self.TWL_wave = 0.1  # 小时
         # 规划时间窗最大值，最小值为0
         self.Tmax = 4  # 小时
@@ -87,6 +87,6 @@ def data_generate(data_parameter):
     log_generate(data_parameter)
 
 if __name__ == '__main__' :
-    path_of_file = '..//data_output//data_15_new_4'
+    path_of_file = '..//data_output//data_30_new_2'
     data_parameter = Data_parameter(path_of_file)
     data_generate(data_parameter)

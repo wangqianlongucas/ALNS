@@ -94,10 +94,12 @@ def LNS(solution, q, request_blank, num_of_iter, algorithm_input_data):
         # 订单插入
         # print('greedy_insert')
         insert_orders = current_request_blank + removal_orders
+        # print(insert_orders)
         insert_request_blank, insert_solution = greedy_insert(removal_solution, insert_orders, algorithm_input_data)
+
         # 计算目标
         insert_objective = sum(truck.travel_distance_line_of_route[-1] for truck in
-                               list(insert_solution.values())) + algorithm_input_data.M * len(request_blank)
+                               list(insert_solution.values())) + algorithm_input_data.M * len(insert_request_blank)
         # 更新最优解
         if insert_objective <= best_objective:
             best_objective = insert_objective
@@ -115,7 +117,7 @@ def LNS(solution, q, request_blank, num_of_iter, algorithm_input_data):
                 current_objective = copy.deepcopy(insert_objective)
                 current_request_blank = copy.deepcopy(insert_request_blank)
         iter += 1
-        T_MAX = T_MAX * 0.95
+        T_MAX = T_MAX * 0.995
 
     return best_request_blank, best_solution
 
@@ -139,14 +141,14 @@ def second_stage(algorithm_input_data, solution, number_of_removal_orders, numbe
             request_blank = truck_to_delete.order
             del second_solution_to_delete[truck_ID_to_delete]
             # 使用 LNS 算法安排request_blank中的订单
-            print('LNS_try:', LNS_try, truck_ID_to_delete, request_blank)
+            print('LNS_try:', LNS_try, 'truck_ID:',truck_ID_to_delete, 'orders_removal:', request_blank)
             LNS_try += 1
             LNS_request_blank, LNS_solution = LNS(second_solution_to_delete, number_of_removal_orders, request_blank, number_of_iter_LNS, algorithm_input_data)
             LNS_objective = sum(truck.travel_distance_line_of_route[-1] for truck in
                 list(LNS_solution.values())) + algorithm_input_data.M * len(LNS_request_blank)
-            print(LNS_objective,LNS_request_blank)
+            print('LNS_objective:', LNS_objective, 'LNS_request_blank:', LNS_request_blank)
             # 如果所有订单均被安排——>break
-            if not LNS_request_blank:
+            if not len(LNS_request_blank):
                 second_solution = LNS_solution
                 break
         # 如果循环到最后一辆车，LNS_request_blank仍不为空 或者只有一辆车——>break
