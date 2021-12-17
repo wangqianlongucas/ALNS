@@ -1,7 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1f37b9e0-2851-4d3c-b01a-93eb996f2a0e" name="Changes" comment="" />
+    <list default="true" id="1f37b9e0-2851-4d3c-b01a-93eb996f2a0e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/ALNS_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/ALNS_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/generat_example.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/generat_example.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/insert_requests.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/insert_requests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_10/output/ALNS/ALNS_best_objectives.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10/output/ALNS/ALNS_best_objectives.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_10/output/ALNS/grades.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10/output/ALNS/grades.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_10/output/ALNS/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10/output/ALNS/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_10/output/ALNS/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10/output/ALNS/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_10/output/first_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10/output/first_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_10/output/first_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10/output/first_stage/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_10/output/second_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10/output/second_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_10/output/second_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10/output/second_stage/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_1/output/ALNS/ALNS_best_objectives.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_1/output/ALNS/ALNS_best_objectives.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_1/output/ALNS/grades.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_1/output/ALNS/grades.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_1/output/ALNS/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_1/output/ALNS/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_1/output/ALNS/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_1/output/ALNS/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_1/output/first_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_1/output/first_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_1/output/first_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_1/output/first_stage/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_1/output/second_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_1/output/second_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_1/output/second_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_1/output/second_stage/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_2/output/ALNS/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_2/output/ALNS/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_2/output/ALNS/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_2/output/ALNS/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_2/output/first_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_2/output/first_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_2/output/first_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_2/output/first_stage/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_2/output/second_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_2/output/second_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_2/output/second_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_2/output/second_stage/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_4/output/ALNS/ALNS_best_objectives.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_4/output/ALNS/ALNS_best_objectives.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_4/output/ALNS/grades.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_4/output/ALNS/grades.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_4/output/ALNS/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_4/output/ALNS/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_4/output/ALNS/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_4/output/ALNS/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_4/output/first_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_4/output/first_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_4/output/first_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_4/output/first_stage/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_4/output/second_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_4/output/second_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_15_new_4/output/second_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_15_new_4/output/second_stage/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_20/output/first_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_20/output/first_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_20/output/first_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_20/output/first_stage/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_20/output/second_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_20/output/second_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_20/output/second_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_20/output/second_stage/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_30_new_2/output/ALNS/ALNS_best_objectives.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_30_new_2/output/ALNS/ALNS_best_objectives.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_30_new_2/output/ALNS/grades.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_30_new_2/output/ALNS/grades.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_30_new_2/output/ALNS/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_30_new_2/output/ALNS/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_30_new_2/output/ALNS/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_30_new_2/output/ALNS/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_30_new_2/output/first_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_30_new_2/output/first_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_30_new_2/output/first_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_30_new_2/output/first_stage/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_30_new_2/output/second_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_30_new_2/output/second_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_30_new_2/output/second_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_30_new_2/output/second_stage/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_50/output/first_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_50/output/first_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_50/output/first_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_50/output/first_stage/trucks.png" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,7 +69,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.generat_example">
     <configuration name="ALNS_main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ALNS" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -39,8 +88,30 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="generat_example" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ALNS" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/code/generat_example.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.generat_example" />
         <item itemvalue="Python.ALNS_main" />
       </list>
     </recent_temporary>
@@ -66,5 +137,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

@@ -126,7 +126,7 @@ def regret_insert(solution, request_blank, regret_periods, algorithm_input_data)
             best_order = c_i_star_sorted[-1][0]
             delta_f_i_x_ik_sorted_best_order = delta_f_i_x_ik_sorted[delta_f_i_x_ik_sorted['order'] == best_order]
             delta_f_i_x_ik_sorted_best_order.reset_index(inplace=True)
-            # todo error
+            # todo seemly no error,,,now!
             best_truck = delta_f_i_x_ik_sorted_best_order.loc[0, 'truck']
             insert_orders.remove(best_order)
             insert_solution[best_truck.id] = best_truck

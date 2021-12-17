@@ -141,7 +141,7 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
             # grades[pair]['grade'] += [grades[pair]['grade'][-1] * (1 - r) + r * (grades[pair]['grade'][-1] - pi_start[pair]) / grades[pair]['times'][-1]]
             # todo 避免 某一算子的分数太低
             grades[pair]['grade'] += [max(grades[pair]['grade'][-1] * (1 - r) + r * (grades[pair]['grade'][-1] - pi_start[pair]) /
-                grades[pair]['times'][-1], 0.1)]
+                grades[pair]['times'][-1], 0.01)]
 
             grades[pair]['times'].append(1)  # 初始化为 1，这两行代码顺序不可交换！！！
         # segment 开始时的得分
@@ -194,8 +194,8 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
 
 if __name__ == '__main__':
     # 初始化
-    number_of_orders = 50
-    path_of_file = '..//data_output//data_50'
+    number_of_orders = 15
+    path_of_file = '..//data_output//data_15_new_2'
     algorithm_input_data = Algorithm_inputdata(path_of_file, number_of_orders)
 
     # 生成初始解
@@ -209,8 +209,10 @@ if __name__ == '__main__':
     print('first_stage_solution:', first_stage_solution_objective)
 
     # 初始解提升（使用LNS算法减少最小使用车辆和第二目标）
+    # Second_stage_solution(output) should be complete.
+    # if solution input stage2 is complete, then stage2 output will be complete.
     number_of_removal_orders = int(0.3 * len(algorithm_input_data.orders))
-    number_of_iter_LNS = 500
+    number_of_iter_LNS = 200
     second_stage_solution = second_stage(algorithm_input_data, first_stage_solution, number_of_removal_orders, number_of_iter_LNS)
     second_stage_solution_output_path = path_of_file + '//output//second_stage'
     mkdir(second_stage_solution_output_path)
@@ -221,13 +223,13 @@ if __name__ == '__main__':
     print('second_stage_solution:', second_stage_solution_objective)
 
     # 使用ALNS算法求解
-    # pair_of_removal_and_insert = [('random', 'greedy'), ('random', 'regret'), ('shaw', 'greedy'), ('shaw', 'regret'),
-    #                               ('worst', 'greedy'), ('worst', 'regret')]
-    # todo regret_insert has problem
-    pair_of_removal_and_insert = [('random', 'greedy'), ('shaw', 'greedy'), ('worst', 'greedy')]
-    # todo notation: here second_stage_solution should be complete
-    number_of_iter_ALNS = 25000
-    number_of_segment_iter = 200
+    # regret_insert-n seemly has no problem, which has test regret-2 and regret-3 and tests are pass!
+    # regret_level is in the inner of ALNS function, that can be changed.
+    pair_of_removal_and_insert = [('random', 'greedy'), ('random', 'regret'), ('shaw', 'greedy'), ('shaw', 'regret'),
+                                  ('worst', 'greedy'), ('worst', 'regret')]
+    # pair_of_removal_and_insert = [('random', 'greedy'), ('shaw', 'greedy'), ('worst', 'greedy')]
+    number_of_iter_ALNS = 7500
+    number_of_segment_iter = 125
     ALNS_solution, grades, ALNS_best_objectives = ALNS(second_stage_solution, pair_of_removal_and_insert, number_of_iter_ALNS, number_of_segment_iter, number_of_removal_orders, algorithm_input_data)
     ALNS_best_sulution = ALNS_solution['best']['solution']
     ALNS_solution_objective = ALNS_solution['best']['objective']
