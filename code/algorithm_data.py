@@ -106,7 +106,9 @@ class Algorithm_inputdata():
         return D_XY
 
 
-if __name__ == '__main__' :
-    path_of_file = '..//data'
-    algorithm_inputdata = Algorithm_inputdata(path_of_file)
+if __name__ == '__main__':
+    # 初始化
+    number_of_orders = 10
+    path_of_file = '..//data_output//data_10_model'
+    algorithm_input_data = Algorithm_inputdata(path_of_file, number_of_orders)
     truck = Truck(1)
