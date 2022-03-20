@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="1f37b9e0-2851-4d3c-b01a-93eb996f2a0e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/removal_requests.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/removal_requests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_output/data_10_model/output/ALNS/ALNS_best_objectives.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10_model/output/ALNS/ALNS_best_objectives.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_output/data_10_model/output/ALNS/grades.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10_model/output/ALNS/grades.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_output/data_10_model/output/ALNS/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10_model/output/ALNS/solution_log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_output/data_10_model/output/ALNS/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10_model/output/ALNS/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/initial_solution.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/initial_solution.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_10/output/first_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10/output/first_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_output/data_10/output/first_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10/output/first_stage/trucks.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_output/data_10_model/output/first_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10_model/output/first_stage/solution_log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_output/data_10_model/output/first_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10_model/output/first_stage/trucks.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_output/data_10_model/output/second_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10_model/output/second_stage/solution_log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_output/data_10_model/output/second_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/data_output/data_10_model/output/second_stage/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/second_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/second_stage/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/second_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/output/second_stage/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/solution_regret/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/solution_regret/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/solution_regret/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/output/solution_regret/trucks.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/solution_worst/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output/solution_worst/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/solution_worst/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/output/solution_worst/trucks.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,11 +40,14 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Python.ALNS_main">
+  <component name="RunManager" selected="Python.initial_solution">
     <configuration name="ALNS_main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ALNS" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/code" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -75,8 +83,30 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="initial_solution" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ALNS" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/code/initial_solution.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.initial_solution" />
         <item itemvalue="Python.ALNS_main" />
         <item itemvalue="Python.generat_example" />
       </list>

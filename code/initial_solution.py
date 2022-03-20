@@ -160,7 +160,7 @@ def second_stage(algorithm_input_data, solution, number_of_removal_orders, numbe
 
 if __name__ == '__main__':
     number_of_orders = 10
-    path_of_file = '..//data_10'
+    path_of_file = '..//data_output//data_10_model'
     algorithm_input_data = Algorithm_inputdata(path_of_file, number_of_orders)
 
     # test_first_stage pass
