@@ -212,7 +212,7 @@ if __name__ == '__main__':
     # Second_stage_solution(output) should be complete.
     # if solution input stage2 is complete, then stage2 output will be complete.
     number_of_removal_orders = int(0.3 * len(algorithm_input_data.orders))
-    number_of_iter_LNS = 200
+    number_of_iter_LNS = 20
     second_stage_solution = second_stage(algorithm_input_data, first_stage_solution, number_of_removal_orders, number_of_iter_LNS)
     second_stage_solution_output_path = path_of_file + '//output//second_stage'
     mkdir(second_stage_solution_output_path)
@@ -228,8 +228,8 @@ if __name__ == '__main__':
     pair_of_removal_and_insert = [('random', 'greedy'), ('random', 'regret'), ('shaw', 'greedy'), ('shaw', 'regret'),
                                   ('worst', 'greedy'), ('worst', 'regret')]
     # pair_of_removal_and_insert = [('random', 'greedy'), ('shaw', 'greedy'), ('worst', 'greedy')]
-    number_of_iter_ALNS = 7500
-    number_of_segment_iter = 125
+    number_of_iter_ALNS = 750
+    number_of_segment_iter = 12
     ALNS_solution, grades, ALNS_best_objectives = ALNS(second_stage_solution, pair_of_removal_and_insert, number_of_iter_ALNS, number_of_segment_iter, number_of_removal_orders, algorithm_input_data)
     ALNS_best_sulution = ALNS_solution['best']['solution']
     ALNS_solution_objective = ALNS_solution['best']['objective']

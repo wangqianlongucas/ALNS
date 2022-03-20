@@ -27,9 +27,20 @@ class Truck():
         node_last = self.route[insert_position - 1]
         is_insert_pass = 1
         for node in self.route[insert_position:]:
-            node_time = max(self.time_line[-1] + (algorithm_input_data.Distance_Mat[node_last,node])/self.v, algorithm_input_data.Nodes.loc[node, 'a'])
-            if node_time <= algorithm_input_data.Nodes.loc[node, 'b']:
-                self.time_line.append(node_time)
+            # # 未计算服务时间 # node_time 开始服务时间（离开时间）
+            # node_time = max(self.time_line[-1] + (algorithm_input_data.Distance_Mat[node_last,node])/self.v, algorithm_input_data.Nodes.loc[node, 'a'])
+            # if node_time <= algorithm_input_data.Nodes.loc[node, 'b']:
+            #     self.time_line.append(node_time)
+            #     node_last = node
+            # else:
+            #     is_insert_pass = 0
+            #     break
+            # 计算服务时间
+            start_time = max(self.time_line[-1] + (algorithm_input_data.Distance_Mat[node_last, node]) / self.v,
+                             algorithm_input_data.Nodes.loc[node, 'a'])
+            leave_time = start_time + algorithm_input_data.Nodes.loc[node, 'st']
+            if start_time <= algorithm_input_data.Nodes.loc[node, 'b']:
+                self.time_line.append(leave_time)
                 node_last = node
             else:
                 is_insert_pass = 0

@@ -48,12 +48,12 @@ def relatedness_calculate_all(solution, algorithm_input_data):
         for order_j in orders:
             if order_j != order_i:
                 locations = {'A_i': algorithm_input_data.OAs.loc[order_i, 'Pickup'],
-                             'B_i': algorithm_input_data.OAs.loc[order_j, 'Pickup'],
-                             'A_j': algorithm_input_data.OAs.loc[order_i, 'Deliver'],
+                             'B_i': algorithm_input_data.OAs.loc[order_i, 'Deliver'],
+                             'A_j': algorithm_input_data.OAs.loc[order_j, 'Pickup'],
                              'B_j': algorithm_input_data.OAs.loc[order_j, 'Deliver'],
                              }
-                relatedness_d = algorithm_input_data.Distance_Mat[locations['A_i'], locations['B_i']] + \
-                                algorithm_input_data.Distance_Mat[locations['A_j'], locations['B_j']]
+                relatedness_d = algorithm_input_data.Distance_Mat[locations['A_i'], locations['A_j']] + \
+                                algorithm_input_data.Distance_Mat[locations['B_i'], locations['B_j']]
                 T = {}
                 for truck_ID, truck in solution.items():
                     for location_key, location in locations.items():
