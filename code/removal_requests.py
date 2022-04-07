@@ -9,33 +9,14 @@ from removal_order import *
 
 
 def random_removal(solution, q, algorithm_input_data):
-    removal_solution = copy.deepcopy(solution)
+    removal_solution = {id: solution[id].truck_copy() for id in solution.keys()}
     q_orders = []
-    while len(q_orders) < q:
-        # print(q_orders)
-        # 随机选择车辆
-        truck_remove_order = random.choice(list(removal_solution.values()))
-        # 订单移除
-        if truck_remove_order.order:
-            # 随机选择订单
-            q_order = random.choice(truck_remove_order.order)
-            q_orders.append(q_order)
-            truck_remove_order.order.remove(q_order)
-            # 更新其他参数
-            Pickup = algorithm_input_data.OAs.loc[q_order, 'Pickup']
-            Pickup_position = truck_remove_order.route.index(Pickup)
-            truck_remove_order.route.remove(Pickup)
-            truck_remove_order.travel_distance_line_of_route_update_remove(Pickup_position, algorithm_input_data)
-
-            Deliver = algorithm_input_data.OAs.loc[q_order, 'Deliver']
-            Deliver_position = truck_remove_order.route.index(Deliver)
-            truck_remove_order.route.remove(Deliver)
-            truck_remove_order.travel_distance_line_of_route_update_remove(Deliver_position, algorithm_input_data)
-            # 时间和载重线更新
-            truck_remove_order.check_and_update(Pickup_position, algorithm_input_data)
-
-            removal_solution[truck_remove_order.id] = truck_remove_order
-
+    orders_in_truck = []
+    for truck_ID, truck in removal_solution.items():
+        orders_in_truck += truck.order
+    q_orders = random.sample(orders_in_truck, q)
+    # print(q_orders)
+    removal_solution = order_removal(removal_solution, q_orders, algorithm_input_data)
     return q_orders, removal_solution
 
 
@@ -48,12 +29,12 @@ def relatedness_calculate_all(solution, algorithm_input_data):
         for order_j in orders:
             if order_j != order_i:
                 locations = {'A_i': algorithm_input_data.OAs.loc[order_i, 'Pickup'],
-                             'B_i': algorithm_input_data.OAs.loc[order_i, 'Deliver'],
-                             'A_j': algorithm_input_data.OAs.loc[order_j, 'Pickup'],
+                             'B_i': algorithm_input_data.OAs.loc[order_j, 'Pickup'],
+                             'A_j': algorithm_input_data.OAs.loc[order_i, 'Deliver'],
                              'B_j': algorithm_input_data.OAs.loc[order_j, 'Deliver'],
                              }
-                relatedness_d = algorithm_input_data.Distance_Mat[locations['A_i'], locations['A_j']] + \
-                                algorithm_input_data.Distance_Mat[locations['B_i'], locations['B_j']]
+                relatedness_d = algorithm_input_data.Distance_Mat[locations['A_i'], locations['B_i']] + \
+                                algorithm_input_data.Distance_Mat[locations['A_j'], locations['B_j']]
                 T = {}
                 for truck_ID, truck in solution.items():
                     for location_key, location in locations.items():
@@ -79,12 +60,12 @@ def relatedness_calculate(solution, order_i, algorithm_input_data):
     for order_j in orders:
         if order_j != order_i:
             locations = {'A_i': algorithm_input_data.OAs.loc[order_i, 'Pickup'],
-                         'B_i': algorithm_input_data.OAs.loc[order_i, 'Deliver'],
-                         'A_j': algorithm_input_data.OAs.loc[order_j, 'Pickup'],
+                         'B_i': algorithm_input_data.OAs.loc[order_j, 'Pickup'],
+                         'A_j': algorithm_input_data.OAs.loc[order_i, 'Deliver'],
                          'B_j': algorithm_input_data.OAs.loc[order_j, 'Deliver'],
                          }
-            relatedness_d = algorithm_input_data.Distance_Mat[locations['A_i'], locations['A_j']] + \
-                            algorithm_input_data.Distance_Mat[locations['B_i'], locations['B_j']]
+            relatedness_d = algorithm_input_data.Distance_Mat[locations['A_i'], locations['B_i']] + \
+                            algorithm_input_data.Distance_Mat[locations['A_j'], locations['B_j']]
             T = {}
             for truck_ID, truck in solution.items():
                 for location_key, location in locations.items():
@@ -129,7 +110,7 @@ def shaw_removal(solution, q, p, algorithm_input_data):
 
 def worst_removal(solution, q, p, algorithm_input_data):
     p = p
-    removal_solution = copy.deepcopy(solution)
+    removal_solution = {id: solution[id].truck_copy() for id in solution.keys()}
     # 记录所有移除的订单
     q_orders = []
     # 记录所有order的的cost
@@ -144,7 +125,7 @@ def worst_removal(solution, q, p, algorithm_input_data):
         for ii in truck_values.order:
             # 索引
             # print('%s车辆的订单为' % truck_id, ii)
-            truck_values_can_change = copy.deepcopy(truck_values)
+            truck_values_can_change = truck_values.truck_copy()
             # 计算去掉该点之后的卡车行驶距离
             Pickup = algorithm_input_data.OAs.loc[ii, 'Pickup']
             Pickup_position = truck_values_can_change.route.index(Pickup)
@@ -202,7 +183,7 @@ def worst_removal(solution, q, p, algorithm_input_data):
             truck_remove_order.route.remove(Deliver)
             truck_remove_order.travel_distance_line_of_route_update_remove(Deliver_position, algorithm_input_data)
             # 时间和载重线更新
-            truck_remove_order.check_and_update(Pickup_position, algorithm_input_data)
+            truck_remove_order.check_and_update(Pickup_position, algorithm_input_data, 'removal')
             # removal_solution[truck_remove_order.id] = truck_remove_order
             removal_solution[truck_id_to_remove_order] = truck_remove_order
 
@@ -213,7 +194,7 @@ def worst_removal(solution, q, p, algorithm_input_data):
             for ii in truck_values.order:
                 # 索引
                 # print('%s车辆的订单为' % truck_id, ii)
-                truck_values_can_change = copy.deepcopy(truck_values)
+                truck_values_can_change = truck_values.truck_copy()
                 # 计算去掉该点之后的卡车行驶距离
                 Pickup = algorithm_input_data.OAs.loc[ii, 'Pickup']
                 Pickup_position = truck_values_can_change.route.index(Pickup)

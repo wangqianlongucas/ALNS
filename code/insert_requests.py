@@ -11,8 +11,8 @@ from insert_order import *
 
 def greedy_insert(solution, request_blank, algorithm_input_data):
     # 初始化
-    insert_solution = copy.deepcopy(solution)
-    insert_orders = copy.deepcopy(request_blank)
+    insert_solution = {id: solution[id].truck_copy() for id in solution.keys()}
+    insert_orders = [order for order in request_blank]
     best_insert_solution = insert_solution
     is_continue = 1 if request_blank else 0
     while is_continue:
@@ -23,12 +23,12 @@ def greedy_insert(solution, request_blank, algorithm_input_data):
         # 遍历所有的订单选择最好的订单插入
         for order in insert_orders:
             # 重置当前解
-            current_insert_solution_order = copy.deepcopy(best_insert_solution)
+            current_insert_solution_order = {id: best_insert_solution[id].truck_copy() for id in best_insert_solution.keys()}
             Pickup = algorithm_input_data.OAs.loc[order, 'Pickup']
             Deliver = algorithm_input_data.OAs.loc[order, 'Deliver']
             for truck_ID, truck in current_insert_solution_order.items():
                 # 重置当前解
-                current_insert_solution_order_truck = copy.deepcopy(current_insert_solution_order)
+                current_insert_solution_order_truck = {id: current_insert_solution_order[id].truck_copy() for id in current_insert_solution_order.keys()}
                 # 插入方式选择 贪心插入
                 is_insert_pass_D, truck_for_Deliver_insert = order_insert_greedy(truck, Pickup, Deliver,
                                                                                  algorithm_input_data)
@@ -56,7 +56,7 @@ def greedy_insert(solution, request_blank, algorithm_input_data):
 
 def delta_f_i_x_ik_calculate(solution, request_blank, algorithm_input_data):
     # 初始化
-    insert_solution = copy.deepcopy(solution)
+    insert_solution = {id: solution[id].truck_copy() for id in solution.keys()}
     columns_name = ['order', 'truck_id_P_D', 'cost', 'truck']
     delta_f_i_x_ik_data = []
     for order in request_blank:
@@ -67,7 +67,7 @@ def delta_f_i_x_ik_calculate(solution, request_blank, algorithm_input_data):
             # 按前后顺序插入
             for position_P in Pickup_insert_positions:
                 # 复制一份做插入测试
-                truck_for_Pickup_insert = copy.deepcopy(truck)
+                truck_for_Pickup_insert = truck.truck_copy()
                 truck_for_Pickup_insert.route.insert(position_P, Pickup)
                 # 时间线计算和检查
                 is_insert_pass_P = truck_for_Pickup_insert.check_and_update(position_P, algorithm_input_data)
@@ -80,7 +80,7 @@ def delta_f_i_x_ik_calculate(solution, request_blank, algorithm_input_data):
                     # 按前后顺序插入
                     for position_D in Deliver_insert_positions:
                         # 复制一份做插入测试
-                        truck_for_Deliver_insert = copy.deepcopy(truck_for_Pickup_insert)
+                        truck_for_Deliver_insert = truck_for_Pickup_insert.truck_copy()
                         truck_for_Deliver_insert.route.insert(position_D, Deliver)
                         # 时间线计算和检查
                         is_insert_pass_D = truck_for_Deliver_insert.check_and_update(position_D, algorithm_input_data)
@@ -101,8 +101,8 @@ def delta_f_i_x_ik_calculate(solution, request_blank, algorithm_input_data):
 def regret_insert(solution, request_blank, regret_periods, algorithm_input_data):
     # regret_periods >=2 为后悔的期数
     # 初始化
-    insert_solution = copy.deepcopy(solution)
-    insert_orders = copy.deepcopy(request_blank)
+    insert_solution = {id: solution[id].truck_copy() for id in solution.keys()}
+    insert_orders = [order_i for order_i in request_blank]
     is_continue = 1 if request_blank else 0
     while is_continue:
         delta_f_i_x_ik = delta_f_i_x_ik_calculate(insert_solution, insert_orders, algorithm_input_data)
@@ -126,7 +126,7 @@ def regret_insert(solution, request_blank, regret_periods, algorithm_input_data)
             best_order = c_i_star_sorted[-1][0]
             delta_f_i_x_ik_sorted_best_order = delta_f_i_x_ik_sorted[delta_f_i_x_ik_sorted['order'] == best_order]
             delta_f_i_x_ik_sorted_best_order.reset_index(inplace=True)
-            # todo seemly no error,,,now!
+            # todo error
             best_truck = delta_f_i_x_ik_sorted_best_order.loc[0, 'truck']
             insert_orders.remove(best_order)
             insert_solution[best_truck.id] = best_truck

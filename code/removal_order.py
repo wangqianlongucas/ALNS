@@ -15,13 +15,17 @@ def order_removal(solution, orders, algorithm_input_data):
                 truck_remove_order.order.remove(order)
                 Pickup_position = truck_remove_order.route.index(Pickup)
                 truck_remove_order.route.remove(Pickup)
+                # 更新latest_possible_time_update
+                truck_remove_order.latest_possible_time_removal(Pickup_position, algorithm_input_data)
                 truck_remove_order.travel_distance_line_of_route_update_remove(Pickup_position, algorithm_input_data)
 
                 Deliver = algorithm_input_data.OAs.loc[order, 'Deliver']
                 Deliver_position = truck_remove_order.route.index(Deliver)
                 truck_remove_order.route.remove(Deliver)
+                # 更新latest_possible_time_update
+                truck_remove_order.latest_possible_time_removal(Deliver_position, algorithm_input_data)
                 truck_remove_order.travel_distance_line_of_route_update_remove(Deliver_position, algorithm_input_data)
                 # 时间和载重线更新
-                truck_remove_order.check_and_update(Pickup_position, algorithm_input_data)
+                truck_remove_order.check_and_update(Pickup_position, algorithm_input_data, 'removal')
                 removal_solution[truck_ID] = truck_remove_order
     return removal_solution

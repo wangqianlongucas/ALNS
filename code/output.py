@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 
 def output_to_picture(output_picture_path, solution, algorithm_input_data):
     t_color = ['g--', 'r-', 'y--', 'b--', 'k-', 'c--', 'm--', 'r-', 'y--', 'g--', 'r-', 'y--', 'g--', 'r-', 'y--',
-               'g--', 'r-', 'y--']
+               'g--', 'r-', 'y--', 'g--', 'r-', 'y--', 'b--', 'k-', 'c--', 'm--', 'r-']
+    t_color = t_color * 3
     plt.figure()
     # 所有节点
     for node in range(1, len(algorithm_input_data.OAs) * 2 + 1):
@@ -31,8 +32,10 @@ def output_to_picture(output_picture_path, solution, algorithm_input_data):
     plt.savefig(output_picture_path + '\\trucks.png', dpi=600)
 
 
-def output_to_log(output_log_path, solution):
+def output_to_log(output_log_path, solution, objective, trucks):
     with open(output_log_path + '\\solution_log.txt', 'w') as txt:
+        txt_write = 'objective:' + str(objective) + '\n' + 'trucks:' + str(trucks) + '\n\n'
+        txt.write(txt_write)
         for truck_ID, truck in solution.items():
             txt_write = 'truck_%s:' % truck_ID + 'speed_%s' % truck.v + '\n'
             txt_write += 'route:' + str(truck.route) + '\n'

@@ -18,13 +18,13 @@ from file_create import *
 
 
 # first_stage
-def first_stage(algorithm_input_data):
+def first_stage(algorithm_input_data, parameters):
     # 初始化
     solution = {}
     orders = list(algorithm_input_data.OAs.loc[:, 'Pickup'])
     # 创建第一辆车
     truck_ID_MAX = 1
-    truck = Truck(truck_ID_MAX)
+    truck = Truck(truck_ID_MAX, parameters['capacity_max'], parameters['time_latest'])
     solution[truck_ID_MAX] = truck
     # 安排订单
     while orders:
@@ -55,7 +55,7 @@ def first_stage(algorithm_input_data):
         if not is_insert_pass_D:
             # 此时现有车辆均无法插入需求 order，需要新增加truck
             truck_ID_MAX += 1
-            truck_new = Truck(truck_ID_MAX)
+            truck_new = Truck(truck_ID_MAX, parameters['capacity_max'], parameters['time_latest'])
             is_insert_pass_P, is_insert_pass_D, truck_new_for_Deliver_insert = order_insert_simple_in_order(truck_new,
                                                                                                             Pickup,
                                                                                                             Deliver,
@@ -74,9 +74,9 @@ def first_stage(algorithm_input_data):
 
 def LNS(solution, q, request_blank, num_of_iter, algorithm_input_data):
     # 初始化
-    current_solution = copy.deepcopy(solution)
+    current_solution = {id: solution[id].truck_copy() for id in solution.keys()}
     current_objective = 1e5
-    current_request_blank = copy.deepcopy(request_blank)
+    current_request_blank = [order_i for order_i in request_blank]
     best_solution = current_solution
     best_objective = current_objective
     best_request_blank = current_request_blank
@@ -107,15 +107,15 @@ def LNS(solution, q, request_blank, num_of_iter, algorithm_input_data):
             best_request_blank = insert_request_blank
         # 模拟退火接受准则更新当前解
         if insert_objective <= current_objective:
-            current_solution = copy.deepcopy(insert_solution)
+            current_solution = {id: insert_solution[id].truck_copy() for id in insert_solution.keys()}
             current_objective = copy.deepcopy(insert_objective)
-            current_request_blank = copy.deepcopy(insert_request_blank)
+            current_request_blank = [order_i for order_i in insert_request_blank]
         else:
             insert_accept_sa = random.random()
             if insert_accept_sa <= math.exp(-(insert_objective - current_objective) / T_MAX):
-                current_solution = copy.deepcopy(insert_solution)
+                current_solution = {id: insert_solution[id].truck_copy() for id in insert_solution.keys()}
                 current_objective = copy.deepcopy(insert_objective)
-                current_request_blank = copy.deepcopy(insert_request_blank)
+                current_request_blank = [order_i for order_i in insert_request_blank]
         iter += 1
         T_MAX = T_MAX * 0.995
 
@@ -125,14 +125,14 @@ def LNS(solution, q, request_blank, num_of_iter, algorithm_input_data):
 # second_stage
 def second_stage(algorithm_input_data, solution, number_of_removal_orders, number_of_iter_LNS):
     # 初始化
-    second_solution = copy.deepcopy(solution)
+    second_solution = {id: solution[id].truck_copy() for id in solution.keys()}
     is_continue = 1 if len(list(second_solution.keys())) > 1 else 0
     LNS_try = 1
     while is_continue:
         list_truck_ID = list(second_solution.keys())
         while list_truck_ID:
             # 重置 当前解
-            second_solution_to_delete = copy.deepcopy(second_solution)
+            second_solution_to_delete = {id: second_solution[id].truck_copy() for id in second_solution.keys()}
             # 选择移除车辆
             truck_ID_to_delete = random.choice(list_truck_ID)
             list_truck_ID.remove(truck_ID_to_delete)
@@ -141,7 +141,7 @@ def second_stage(algorithm_input_data, solution, number_of_removal_orders, numbe
             request_blank = truck_to_delete.order
             del second_solution_to_delete[truck_ID_to_delete]
             # 使用 LNS 算法安排request_blank中的订单
-            print('LNS_try:', LNS_try, 'truck_ID:',truck_ID_to_delete, 'orders_removal:', request_blank)
+            print('LNS_try:', LNS_try, 'truck_ID:', truck_ID_to_delete, 'orders_removal:', request_blank)
             LNS_try += 1
             LNS_request_blank, LNS_solution = LNS(second_solution_to_delete, number_of_removal_orders, request_blank, number_of_iter_LNS, algorithm_input_data)
             LNS_objective = sum(truck.travel_distance_line_of_route[-1] for truck in
@@ -160,7 +160,7 @@ def second_stage(algorithm_input_data, solution, number_of_removal_orders, numbe
 
 if __name__ == '__main__':
     number_of_orders = 10
-    path_of_file = '..//data_output//data_10_model'
+    path_of_file = '..//data_10'
     algorithm_input_data = Algorithm_inputdata(path_of_file, number_of_orders)
 
     # test_first_stage pass

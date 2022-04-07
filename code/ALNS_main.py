@@ -7,6 +7,8 @@
 # 算子集合 [('random', 'greedy'),('random', 'regret'),('shaw', 'greedy'),('shaw', 'regret'),('worst', 'greedy'),('worst', 'regret')]
 import copy
 import random
+import time
+
 import numpy as np
 from collections import Counter
 
@@ -88,7 +90,8 @@ def update_grades_and_others(ALNS_solution, select_pair, grades, segment, algori
         grades[select_pair]['grade'][segment] += algorithm_input_data.sita['sita_2']
     else:
         insert_accept_sa = random.random()
-        if insert_accept_sa <= math.exp(-(ALNS_solution['insert']['objective'] - ALNS_solution['current']['objective']) / T_max):
+        if insert_accept_sa <= math.exp(
+                -(ALNS_solution['insert']['objective'] - ALNS_solution['current']['objective']) / T_max):
             ALNS_solution['current']['solution'] = ALNS_solution['insert']['solution']
             ALNS_solution['current']['objective'] = ALNS_solution['insert']['objective']
             ALNS_solution['current']['request_blank'] = ALNS_solution['insert']['request_blank']
@@ -105,6 +108,9 @@ def removal(removal_method, solution, number_of_removal_order, p, algorithm_inpu
         removal_solution = shaw_removal(solution, number_of_removal_order, p, algorithm_input_data)
     elif removal_method == 'worst':
         removal_solution = worst_removal(solution, number_of_removal_order, p, algorithm_input_data)
+    elif removal_method == 'string':
+        removal_solution = string_removal(solution, number_of_removal_order, algorithm_input_data)
+        # removal_solution = string_removal(solution, 4, algorithm_input_data)
     return removal_solution
 
 
@@ -117,14 +123,21 @@ def insert(insert_method, solution, request_blank, regret_level, algorithm_input
         insert_solution = regret_insert(solution, request_blank, regret_level, algorithm_input_data)
     return insert_solution
 
+def checking_solution_whether_has_empty_route(solution):
+    for truck_ID in list(solution.keys()):
+        if not solution[truck_ID].order:
+            del solution[truck_ID]
+    return solution
 
-def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment_iter, number_of_removal_orders, algorithm_input_data):
+def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment_iter, number_of_removal_orders,
+         algorithm_input_data):
     # 初始化
     number_of_segment = int(number_of_iter / number_of_segment_iter)
     grades = {pair: {'segment': [0], 'grade': [1], 'times': [1]} for pair in pair_of_removal_and_insert}
     solution_fomat = {'solution': None, 'request_blank': [], 'objective': np.inf}
-    ALNS_solution = {'current': copy.deepcopy(solution_fomat), 'insert': copy.deepcopy(solution_fomat), 'best': copy.deepcopy(solution_fomat)}
-    ALNS_solution['current']['solution'] = copy.deepcopy(solution)
+    ALNS_solution = {'current': copy.deepcopy(solution_fomat), 'insert': copy.deepcopy(solution_fomat),
+                     'best': copy.deepcopy(solution_fomat)}
+    ALNS_solution['current']['solution'] = {id: solution[id].truck_copy() for id in solution.keys()}
     # 计算当前解目标
     ALNS_solution['current']['objective'] = sum(truck.travel_distance_line_of_route[-1] for truck in
                                                 list(solution.values())) + algorithm_input_data.M * len([])
@@ -140,8 +153,9 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
             r = 0.5
             # grades[pair]['grade'] += [grades[pair]['grade'][-1] * (1 - r) + r * (grades[pair]['grade'][-1] - pi_start[pair]) / grades[pair]['times'][-1]]
             # todo 避免 某一算子的分数太低
-            grades[pair]['grade'] += [max(grades[pair]['grade'][-1] * (1 - r) + r * (grades[pair]['grade'][-1] - pi_start[pair]) /
-                grades[pair]['times'][-1], 0.01)]
+            grades[pair]['grade'] += [
+                max(grades[pair]['grade'][-1] * (1 - r) + r * (grades[pair]['grade'][-1] - pi_start[pair]) /
+                    grades[pair]['times'][-1], 0.1)]
 
             grades[pair]['times'].append(1)  # 初始化为 1，这两行代码顺序不可交换！！！
         # segment 开始时的得分
@@ -154,7 +168,8 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
             print('iter', iter)
             # 初始化
             current_solution = ALNS_solution['current']['solution']
-            request_blank = copy.deepcopy(ALNS_solution['current']['request_blank'])
+            current_solution = checking_solution_whether_has_empty_route(current_solution)
+            request_blank = [order_i for order_i in ALNS_solution['current']['request_blank']]
 
             # # 轮盘赌选择法 选择
             select_pair = roulette_selection_method(grades)
@@ -168,22 +183,32 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
             # p 控制随机程度(shaw,worst)  todo here this parameter is not hyper-parameter now
             p = 3
             print('ALNS,removal')
-            number_of_removal_orders_else = max(number_of_removal_orders - len(request_blank), int(0.5 * number_of_removal_orders))
-            request_blank_removal, removal_solution = removal(removal_method, current_solution, number_of_removal_orders_else, p, algorithm_input_data)
+            number_of_removal_orders_else = max(number_of_removal_orders - len(request_blank),
+                                                int(0.5 * number_of_removal_orders))
+            request_blank_removal, removal_solution = removal(removal_method, current_solution,
+                                                              number_of_removal_orders_else, p, algorithm_input_data)
             # insert
             request_blank += request_blank_removal
             # todo debug-->pass
             request_blank_counter = dict(Counter(request_blank))
-            if max(list(request_blank_counter.values())) > 1:
-                print('warning!--------------------------------------1')
+            if list(request_blank_counter.values()):
+                if max(list(request_blank_counter.values())) > 1:  # 同一订单移除超过一次
+                    print('warning!--------------------------------------1')
             regret_level = 2
             print('ALNS,insert')
-            ALNS_solution['insert']['request_blank'], ALNS_solution['insert']['solution'] = insert(insert_method, removal_solution, request_blank, regret_level, algorithm_input_data)
+            ALNS_solution['insert']['request_blank'], ALNS_solution['insert']['solution'] = insert(insert_method,
+                                                                                                   removal_solution,
+                                                                                                   request_blank,
+                                                                                                   regret_level,
+                                                                                                   algorithm_input_data)
             print('ALNS,update_grades_and_others')
             # 更新得分和others
             ALNS_solution['insert']['objective'] = sum(truck.travel_distance_line_of_route[-1] for truck in
-                                                       list(ALNS_solution['insert']['solution'].values())) + algorithm_input_data.M * len(ALNS_solution['insert']['request_blank'])
-            ALNS_solution, grades = update_grades_and_others(ALNS_solution, select_pair, grades, segment, algorithm_input_data, T_MAX)
+                                                       list(ALNS_solution['insert'][
+                                                                'solution'].values())) + algorithm_input_data.M * len(
+                ALNS_solution['insert']['request_blank'])
+            ALNS_solution, grades = update_grades_and_others(ALNS_solution, select_pair, grades, segment,
+                                                             algorithm_input_data, T_MAX)
             ALNS_best_objectives.append(ALNS_solution['best']['objective'])
             T_MAX = 0.9999 * T_MAX
             if T_MAX < T_MIN:
@@ -193,50 +218,65 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
 
 
 if __name__ == '__main__':
+    random.seed(100)
     # 初始化
     number_of_orders = 10
-    path_of_file = '..//data_output//data_10_model'
+    path_of_file = '..//benchmark//200//LC1_2_2'
     algorithm_input_data = Algorithm_inputdata(path_of_file, number_of_orders)
-
+    parameters = {
+        'capacity_max': 200,
+        'time_latest': algorithm_input_data.Nodes.loc[0, 'b']
+    }
     # 生成初始解
-    first_stage_solution = first_stage(algorithm_input_data)
+    first_stage_solution = first_stage(algorithm_input_data, parameters)
+    first_stage_solution_trucks = len(first_stage_solution)
     first_stage_solution_output_path = path_of_file + '//output//first_stage'
     mkdir(first_stage_solution_output_path)
     output_to_picture(first_stage_solution_output_path, first_stage_solution, algorithm_input_data)
-    output_to_log(first_stage_solution_output_path, first_stage_solution)
     first_stage_solution_objective = sum(truck.travel_distance_line_of_route[-1] for truck in
                                          list(first_stage_solution.values())) + algorithm_input_data.M * len([])
+    output_to_log(first_stage_solution_output_path, first_stage_solution, first_stage_solution_objective,
+                  first_stage_solution_trucks)
     print('first_stage_solution:', first_stage_solution_objective)
 
     # 初始解提升（使用LNS算法减少最小使用车辆和第二目标）
-    # Second_stage_solution(output) should be complete.
-    # if solution input stage2 is complete, then stage2 output will be complete.
-    number_of_removal_orders = int(0.3 * len(algorithm_input_data.orders))
-    number_of_iter_LNS = 20
-    second_stage_solution = second_stage(algorithm_input_data, first_stage_solution, number_of_removal_orders, number_of_iter_LNS)
+    number_of_removal_orders = int(0.2 * len(algorithm_input_data.orders))
+    number_of_iter_LNS = int(first_stage_solution_trucks/3)
+    t_3 = time.time()
+    second_stage_solution = second_stage(algorithm_input_data, first_stage_solution, number_of_removal_orders,
+                                         number_of_iter_LNS)
+    t_4 = time.time()
+    print('----------------------',t_4 - t_3)
+    second_stage_solution_trucks = len(second_stage_solution)
     second_stage_solution_output_path = path_of_file + '//output//second_stage'
     mkdir(second_stage_solution_output_path)
     output_to_picture(second_stage_solution_output_path, second_stage_solution, algorithm_input_data)
-    output_to_log(second_stage_solution_output_path, second_stage_solution)
     second_stage_solution_objective = sum(truck.travel_distance_line_of_route[-1] for truck in
                                           list(second_stage_solution.values())) + algorithm_input_data.M * len([])
+    output_to_log(second_stage_solution_output_path, second_stage_solution, second_stage_solution_objective,
+                  second_stage_solution_trucks)
     print('second_stage_solution:', second_stage_solution_objective)
 
     # 使用ALNS算法求解
-    # regret_insert-n seemly has no problem, which has test regret-2 and regret-3 and tests are pass!
-    # regret_level is in the inner of ALNS function, that can be changed.
-    pair_of_removal_and_insert = [('random', 'greedy'), ('random', 'regret'), ('shaw', 'greedy'), ('shaw', 'regret'),
-                                  ('worst', 'greedy'), ('worst', 'regret')]
-    # pair_of_removal_and_insert = [('random', 'greedy'), ('shaw', 'greedy'), ('worst', 'greedy')]
-    number_of_iter_ALNS = 750
-    number_of_segment_iter = 12
-    ALNS_solution, grades, ALNS_best_objectives = ALNS(second_stage_solution, pair_of_removal_and_insert, number_of_iter_ALNS, number_of_segment_iter, number_of_removal_orders, algorithm_input_data)
-    ALNS_best_sulution = ALNS_solution['best']['solution']
+    # pair_of_removal_and_insert = [('random', 'greedy'), ('random', 'regret'), ('shaw', 'greedy'), ('shaw', 'regret'),
+    #                               ('worst', 'greedy'), ('worst', 'regret')]
+    # todo regret_insert has problem
+    pair_of_removal_and_insert = [('random', 'greedy'), ('shaw', 'greedy'), ('worst', 'greedy')]
+    # pair_of_removal_and_insert = [('shaw', 'greedy'), ('worst', 'greedy'), ('string', 'greedy')]
+    # todo notation: here second_stage_solution should be complete
+    number_of_iter_ALNS = 100
+    number_of_segment_iter = 2
+    ALNS_solution, grades, ALNS_best_objectives = ALNS(second_stage_solution, pair_of_removal_and_insert,
+                                                       number_of_iter_ALNS, number_of_segment_iter,
+                                                       number_of_removal_orders, algorithm_input_data)
+    ALNS_best_solution = ALNS_solution['best']['solution']
+    ALNS_best_solution_trucks = len(ALNS_best_solution)
     ALNS_solution_objective = ALNS_solution['best']['objective']
     ALNS_stage_solution_output_path = path_of_file + '//output//ALNS'
     mkdir(ALNS_stage_solution_output_path)
-    output_to_picture(ALNS_stage_solution_output_path, ALNS_best_sulution, algorithm_input_data)
-    output_to_log(ALNS_stage_solution_output_path, ALNS_best_sulution)
+    output_to_picture(ALNS_stage_solution_output_path, ALNS_best_solution, algorithm_input_data)
+    output_to_log(ALNS_stage_solution_output_path, ALNS_best_solution, ALNS_solution_objective,
+                  ALNS_best_solution_trucks)
     ALNS_output(grades, ALNS_best_objectives, ALNS_stage_solution_output_path)
 
     print('first_stage_solution:', first_stage_solution_objective)
