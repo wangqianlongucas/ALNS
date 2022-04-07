@@ -246,7 +246,7 @@ if __name__ == '__main__':
     second_stage_solution = second_stage(algorithm_input_data, first_stage_solution, number_of_removal_orders,
                                          number_of_iter_LNS)
     t_4 = time.time()
-    print('----------------------',t_4 - t_3)
+    print('----------------------', t_4 - t_3)
     second_stage_solution_trucks = len(second_stage_solution)
     second_stage_solution_output_path = path_of_file + '//output//second_stage'
     mkdir(second_stage_solution_output_path)

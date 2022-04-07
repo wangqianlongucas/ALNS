@@ -6,6 +6,7 @@
 # 本模块为初始解生成代码
 import random
 import copy
+import time
 import math
 import numpy as np
 
@@ -159,42 +160,45 @@ def second_stage(algorithm_input_data, solution, number_of_removal_orders, numbe
 
 
 if __name__ == '__main__':
+    random.seed(100)
+    # 初始化
     number_of_orders = 10
-    path_of_file = '..//data_10'
+    path_of_file = '..//benchmark//200//LC1_2_2'
     algorithm_input_data = Algorithm_inputdata(path_of_file, number_of_orders)
-
-    # test_first_stage pass
-    first_stage_solution = first_stage(algorithm_input_data)
-    first_stage_solution[6] = Truck(6)
+    parameters = {
+        'capacity_max': 200,
+        'time_latest': algorithm_input_data.Nodes.loc[0, 'b']
+    }
+    # 生成初始解
+    first_stage_solution = first_stage(algorithm_input_data, parameters)
+    first_stage_solution_trucks = len(first_stage_solution)
     first_stage_solution_output_path = path_of_file + '//output//first_stage'
     mkdir(first_stage_solution_output_path)
     output_to_picture(first_stage_solution_output_path, first_stage_solution, algorithm_input_data)
-    output_to_log(first_stage_solution_output_path, first_stage_solution)
-    print(sum(truck.travel_distance_line_of_route[-1] for truck in list(first_stage_solution.values())))
+    first_stage_solution_objective = sum(truck.travel_distance_line_of_route[-1] for truck in
+                                         list(first_stage_solution.values())) + algorithm_input_data.M * len([])
+    output_to_log(first_stage_solution_output_path, first_stage_solution, first_stage_solution_objective,
+                  first_stage_solution_trucks)
+    print('first_stage_solution:', first_stage_solution_objective)
 
-    # test_second_stage pass
-    number_of_removal_orders = int(0.3 * len(algorithm_input_data.orders))
-    number_of_iter_LNS = 20
-    second_stage_solution = second_stage(algorithm_input_data, first_stage_solution, number_of_removal_orders, number_of_iter_LNS)
-    output_to_picture('..//output//second_stage', second_stage_solution, algorithm_input_data)
-    output_to_log('..//output//second_stage', second_stage_solution)
-    print(sum(truck.travel_distance_line_of_route[-1] for truck in list(second_stage_solution.values())))
+    # 初始解提升（使用LNS算法减少最小使用车辆和第二目标）
+    number_of_removal_orders = int(0.2 * len(algorithm_input_data.orders))
+    number_of_iter_LNS = int(first_stage_solution_trucks/3)
+    t_3 = time.time()
+    second_stage_solution = second_stage(algorithm_input_data, first_stage_solution, number_of_removal_orders,
+                                         number_of_iter_LNS)
+    t_4 = time.time()
+    print('----------------------', t_4 - t_3)
+    second_stage_solution_trucks = len(second_stage_solution)
+    second_stage_solution_output_path = path_of_file + '//output//second_stage'
+    mkdir(second_stage_solution_output_path)
+    output_to_picture(second_stage_solution_output_path, second_stage_solution, algorithm_input_data)
+    second_stage_solution_objective = sum(truck.travel_distance_line_of_route[-1] for truck in
+                                          list(second_stage_solution.values())) + algorithm_input_data.M * len([])
+    output_to_log(second_stage_solution_output_path, second_stage_solution, second_stage_solution_objective,
+                  second_stage_solution_trucks)
+    print('second_stage_solution:', second_stage_solution_objective)
 
-    # relatedness = relatedness_calculate_all(first_stage_solution, algorithm_input_data)
-    # relatedness_i_with_any = relatedness_calculate(first_stage_solution, 2, algorithm_input_data)
-    D_shaw, solution_shaw = shaw_removal(second_stage_solution, 3, 1000, algorithm_input_data)
-    # delta_f_i_x_ik = delta_f_i_x_ik_calculate(solution_shaw, D_shaw, algorithm_input_data)
-    D_no_regret, solution_regret = regret_insert(solution_shaw, D_shaw, 2, algorithm_input_data)
-    output_to_picture('..//output//solution_regret', solution_regret, algorithm_input_data)
-    output_to_log('..//output//solution_regret', solution_regret)
-    print(sum(truck.travel_distance_line_of_route[-1] for truck in list(solution_regret.values())))
-
-    D_worst, solution_worst = worst_removal(second_stage_solution, 3, 1000, algorithm_input_data)
-    D_no_worst, solution_worst = regret_insert(solution_worst, D_worst, 2, algorithm_input_data)
-    output_to_picture('..//output//solution_worst', solution_worst, algorithm_input_data)
-    output_to_log('..//output//solution_worst', solution_worst)
-    print(sum(truck.travel_distance_line_of_route[-1] for truck in list(solution_worst.values())))
-    print('finish')
 # todo notation here
 # 添加一辆新的无任何任务的车辆进解，在第二阶段可能会出现无法提出该车辆，其原因：
 # 将该车剔除后，使用LNS进行解的测试和改进，1 由于LNS的迭代次数的原因，可能会出现LNS无法破坏解后无法修复（将订单全部安排）

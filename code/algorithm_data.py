@@ -242,7 +242,12 @@ class Algorithm_inputdata():
 
 
 if __name__ == '__main__':
+    # 初始化
     number_of_orders = 10
-    path_of_file = '..//benchmark//200//LC1_2_10'
+    path_of_file = '..//benchmark//200//LC1_2_2'
     algorithm_input_data = Algorithm_inputdata(path_of_file, number_of_orders)
-    truck = Truck(1)
+    parameters = {
+        'capacity_max': 200,
+        'time_latest': algorithm_input_data.Nodes.loc[0, 'b']
+    }
+    truck = Truck(1, parameters['capacity_max'], parameters['time_latest'])
