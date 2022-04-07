@@ -5,6 +5,6 @@ Contact me
 
 Mail: 1763423314@qq.com
 
-wx: wql15393860521
+公众号: Sandiago
 
 如发现代码有问题可与我邮件、微信等联系
