@@ -28,11 +28,11 @@ txt为基本信息说明
 
 ## 输出文件夹 output
 
-![image](https://user-images.githubusercontent.com/67860270/162675824-8b9f3fbb-dffa-45d1-aa30-bed3185aaad2.png)
+![image](https://user-images.githubusercontent.com/67860270/162675879-dcc0ef43-b6fd-45e1-91bb-61f43bcd7dc4.png)
 
 为了便于分析，保留了三个阶段的解：初始解，LNS最小化车辆数，ALNS优化
 
-![image](https://user-images.githubusercontent.com/67860270/162675879-dcc0ef43-b6fd-45e1-91bb-61f43bcd7dc4.png)
+![image](https://user-images.githubusercontent.com/67860270/162675824-8b9f3fbb-dffa-45d1-aa30-bed3185aaad2.png)
 
 ALNS求解结果：可视化，解输出，算子得分曲线变化图，ALNS目标值变化曲线
 
