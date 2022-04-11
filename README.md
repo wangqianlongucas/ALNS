@@ -1,4 +1,4 @@
-# ALNS
+# 1 ALNS
 
 ## This is a repository for ALNS
 
@@ -14,12 +14,12 @@
 ### 公众号: Sandiago
 ![微信图片_20220411144643](https://user-images.githubusercontent.com/67860270/162680224-6e57647a-de34-4897-9ec1-0435dcbcfd42.jpg)
 
-# 代码改进说明
+# 2 代码改进说明
 ## regret算子尚未完成效率提升改进，暂时无法使用
 
-# 文件说明
+# 3 文件说明
 
-## 输入文件夹：
+## 3.1 输入文件夹：
 
 ![image](https://user-images.githubusercontent.com/67860270/162675189-e1058e02-b05c-48c3-89af-3a4f1717268b.png)
 
@@ -33,7 +33,7 @@ Nodes为节点信息：ID，坐标(x,y)，时间窗(a,b)，需求量(dm)，服�
 
 txt为基本信息说明
 
-## 输出文件夹 output
+## 3.2 输出文件夹 output
 
 ![image](https://user-images.githubusercontent.com/67860270/162675824-8b9f3fbb-dffa-45d1-aa30-bed3185aaad2.png)
 
@@ -43,9 +43,9 @@ txt为基本信息说明
 
 ALNS求解结果：可视化，解输出，算子得分曲线变化图，ALNS目标值变化曲线
 
-# 数据结构说明
+# 4 数据结构说明
 
-## 类 Algorithm_inputdata
+## 4.1 类 Algorithm_inputdata
 
 参数：文件夹位置，订单的数量（该参数暂时不用）
 
@@ -53,16 +53,16 @@ ALNS求解结果：可视化，解输出，算子得分曲线变化图，ALNS目
 
 Nodes_numpy：将dataframe转换为array，提高算法中访问节点各类信息的效率
 
-# 类 Truck
+## 4.2 类 Truck
 
 参数：ID，卡车的最大载重，数据集中时间窗的最大值（一般就是depot的b值）
 
-## 属性说明：
+### 属性说明：
 
 time_line：卡车离开某节点的时间
 
 其余属性说明见代码注释
-## 函数说明
+### 函数说明
 ### truck_copy()
 由于在算法中需要频繁的区分当前解和搜索返回解、python面向对象的特性以及数据结构的复杂，使用deepcopy函数复杂度较高，使用时时间开销过大，故定义一个该数据结构专用的copy函数
 ### check_and_update()
@@ -74,8 +74,8 @@ return 插入是否成功
 
 其他函数见代码注释
 
-# 算法解释
+# 5 算法解释
 
 公众号文章链接：https://mp.weixin.qq.com/s/yoZu_bMw0b1DzL4GDgHxXQ
 
-# 实验
+# 6 实验
