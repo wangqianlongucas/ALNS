@@ -1,15 +1,15 @@
 # 1 ALNS
 
 ## This is a repository for ALNS
+Adaptive Large Neighborhood Search Heuristic for the Pickup and Delivery Problem with Time Windows.
 
-
-## 如发现代码有问题可与我邮件、微信、公众号等联系，或者在issue发布等
+## 如发现代码有问题可通过邮件、微信、公众号等方式联系，或者在issue发布等
 
 ## 如果您喜欢或认为对您有帮助，还请 star 和 fork ！
 
 ### Contact me
 
-### Mail: 1763423314@qq.com
+### Mail: 1763423314@qq.com  (wangqianlong）, nku_yjy@163.com  （yujinyue）
 
 ### 公众号: Sandiago
 ![微信图片_20220411144643](https://user-images.githubusercontent.com/67860270/162680224-6e57647a-de34-4897-9ec1-0435dcbcfd42.jpg)
