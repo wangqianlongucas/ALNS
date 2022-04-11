@@ -1,11 +1,13 @@
-# 1 ALNS
+# 1 ALNS 自适应大规模邻域搜索算法
 
 ## This is a repository for ALNS
 Adaptive Large Neighborhood Search Heuristic for the Pickup and Delivery Problem with Time Windows.
 
 ## 如发现代码有问题可通过邮件、微信、公众号等方式联系，或者在issue发布等
+If you find any problem with the code, you can contact by email, WeChat, public account, etc., or publish it in the issue, etc.
 
 ## 如果您喜欢或认为对您有帮助，还请 star 和 fork ！
+Please also star and fork if you liked it or thought it was helpful to you!
 
 ### Contact me
 
