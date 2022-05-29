@@ -218,6 +218,7 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
 
 
 if __name__ == '__main__':
+    t_1 = time.time()
     random.seed(100)
     # 初始化
     number_of_orders = 10
@@ -241,7 +242,7 @@ if __name__ == '__main__':
 
     # 初始解提升（使用LNS算法减少最小使用车辆和第二目标）
     number_of_removal_orders = int(0.2 * len(algorithm_input_data.orders))
-    number_of_iter_LNS = int(first_stage_solution_trucks/3)
+    number_of_iter_LNS = int(first_stage_solution_trucks/5)
     t_3 = time.time()
     second_stage_solution = second_stage(algorithm_input_data, first_stage_solution, number_of_removal_orders,
                                          number_of_iter_LNS)
@@ -264,7 +265,7 @@ if __name__ == '__main__':
     pair_of_removal_and_insert = [('random', 'greedy'), ('shaw', 'greedy'), ('worst', 'greedy')]
     # pair_of_removal_and_insert = [('shaw', 'greedy'), ('worst', 'greedy'), ('string', 'greedy')]
     # todo notation: here second_stage_solution should be complete
-    number_of_iter_ALNS = 100
+    number_of_iter_ALNS = 20
     number_of_segment_iter = 2
     ALNS_solution, grades, ALNS_best_objectives = ALNS(second_stage_solution, pair_of_removal_and_insert,
                                                        number_of_iter_ALNS, number_of_segment_iter,
@@ -282,3 +283,5 @@ if __name__ == '__main__':
     print('first_stage_solution:', first_stage_solution_objective)
     print('second_stage_solution:', second_stage_solution_objective)
     print('ALNS_solution:', ALNS_solution_objective)
+    t_2 = time.time()
+    print(t_2 - t_1)

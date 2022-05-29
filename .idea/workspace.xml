@@ -6,11 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="1f37b9e0-2851-4d3c-b01a-93eb996f2a0e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/benchmark/200/LC1_2_2/output/ALNS/ALNS_best_objectives.png" beforeDir="false" afterPath="$PROJECT_DIR$/benchmark/200/LC1_2_2/output/ALNS/ALNS_best_objectives.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/benchmark/200/LC1_2_2/output/ALNS/grades.png" beforeDir="false" afterPath="$PROJECT_DIR$/benchmark/200/LC1_2_2/output/ALNS/grades.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/benchmark/200/LC1_2_2/output/ALNS/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/benchmark/200/LC1_2_2/output/ALNS/solution_log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/benchmark/200/LC1_2_2/output/ALNS/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/benchmark/200/LC1_2_2/output/ALNS/trucks.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmark/200/LC1_2_2/output/second_stage/solution_log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/benchmark/200/LC1_2_2/output/second_stage/solution_log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/benchmark/200/LC1_2_2/output/second_stage/trucks.png" beforeDir="false" afterPath="$PROJECT_DIR$/benchmark/200/LC1_2_2/output/second_stage/trucks.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code/ALNS_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/ALNS_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/algorithm_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/algorithm_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/initial_solution.py" beforeDir="false" afterPath="$PROJECT_DIR$/code/initial_solution.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +36,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Python.initial_solution">
+  <component name="RunManager" selected="Python.ALNS_main">
     <configuration name="ALNS_main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ALNS" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -60,9 +62,6 @@
       <module name="ALNS" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/code" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -81,6 +80,9 @@
       <module name="ALNS" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/code" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -120,6 +122,9 @@
       <module name="ALNS" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/code" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -136,10 +141,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ALNS_main" />
         <item itemvalue="Python.initial_solution" />
         <item itemvalue="Python.algorithm_data" />
         <item itemvalue="Python.ALNS_main (1)" />
-        <item itemvalue="Python.ALNS_main" />
         <item itemvalue="Python.generat_example" />
       </list>
     </recent_temporary>
