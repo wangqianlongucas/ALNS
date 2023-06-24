@@ -210,11 +210,11 @@ class Algorithm_inputdata():
     def __init__(self, path_of_file, number_of_orders):
         # 读取订单数据和节点数据
         # self.OAs = pd.read_csv(path_of_file + '\\OAs%s.csv'%number_of_orders, index_col=0)
-        self.OAs = pd.read_csv(path_of_file + '\\OAs.csv', index_col=0)
+        self.OAs = pd.read_csv(path_of_file + '//OAs.csv', index_col=0)
         self.orders = list(self.OAs.loc[:, 'Pickup'])
         # Nodes[0]表示卡车出发点
         # self.Nodes = pd.read_csv(path_of_file + '\\Nodes%s.csv'%number_of_orders)
-        self.Nodes = pd.read_csv(path_of_file + '\\Nodes.csv')
+        self.Nodes = pd.read_csv(path_of_file + '//Nodes.csv')
         self.Nodes_numpy = self.Nodes.values
         # 计算距离矩阵
         self.Distance_Mat = self.distance_matrix(self.Nodes)
@@ -222,8 +222,8 @@ class Algorithm_inputdata():
         self.M = 800
         # 相似度系数
         self.weight = {'d': 9, 'T': 3, 'l': 2, 'K': 5}
-        # self.sita = {'sita_1': 33, 'sita_2': 9, 'sita_3': 13}
-        self.sita = {'sita_1': 0.4, 'sita_2': 0.3, 'sita_3': 0.2}
+        self.sita = {'sita_1': 33, 'sita_2': 9, 'sita_3': 13}
+        # self.sita = {'sita_1': 0.4, 'sita_2': 0.3, 'sita_3': 0.2}
 
     def distance_matrix(self, pd_data):
         list_include_index_etc = pd_data.values
