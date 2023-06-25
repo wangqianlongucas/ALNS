@@ -74,6 +74,7 @@ def roulette_selection_method(grades):
 
 # 更新得分,others函数
 def update_rewards_and_others(ALNS_solution, select_pair, rewards, algorithm_input_data, T_max):
+    rewards[select_pair]['sita'] += 1
     # 更新全局最优
     if ALNS_solution['insert']['objective'] <= ALNS_solution['best']['objective']:
         # 更新解
@@ -82,14 +83,14 @@ def update_rewards_and_others(ALNS_solution, select_pair, rewards, algorithm_inp
         ALNS_solution['best']['request_blank'] = ALNS_solution['insert']['request_blank']
         # 更新得分
         rewards[select_pair]['pi'] += algorithm_input_data.sita['sita_1']
-        rewards[select_pair]['sita'] += 1
+
     # 更新当前解
     if ALNS_solution['insert']['objective'] <= ALNS_solution['current']['objective']:
         ALNS_solution['current']['solution'] = ALNS_solution['insert']['solution']
         ALNS_solution['current']['objective'] = ALNS_solution['insert']['objective']
         ALNS_solution['current']['request_blank'] = ALNS_solution['insert']['request_blank']
         rewards[select_pair]['pi'] += algorithm_input_data.sita['sita_2']
-        rewards[select_pair]['sita'] += 1
+
     else:
         insert_accept_sa = random.random()
         if insert_accept_sa <= math.exp(
@@ -98,7 +99,7 @@ def update_rewards_and_others(ALNS_solution, select_pair, rewards, algorithm_inp
             ALNS_solution['current']['objective'] = ALNS_solution['insert']['objective']
             ALNS_solution['current']['request_blank'] = ALNS_solution['insert']['request_blank']
             rewards[select_pair]['pi'] += algorithm_input_data.sita['sita_3']
-            rewards[select_pair]['sita'] += 1
+
     return ALNS_solution, rewards
 
 
@@ -108,9 +109,9 @@ def grades_update(grades, segment, rewards, lamuda=0.5):
         grades[pair]['times'].append(rewards[pair]['sita'])
         if rewards[pair]['sita']:
             grades[pair]['grade'] += [max(grades[pair]['grade'][-1] * (1 - lamuda) + lamuda * rewards[pair]['pi'] /
-                                           rewards[pair]['sita'], 0.1)]
+                                           rewards[pair]['sita'], 0.51)]
         else:
-            grades[pair]['grade'] += [max(grades[pair]['grade'][-1] * (1 - lamuda), 0.1)]
+            grades[pair]['grade'] += [max(grades[pair]['grade'][-1] * (1 - lamuda), 0.51)]
     return grades
 
 
@@ -147,7 +148,7 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
          algorithm_input_data):
     # 初始化
     number_of_segment = int(number_of_iter / number_of_segment_iter)
-    grades = {pair: {'segment': [0], 'grade': [1], 'times': [1]} for pair in pair_of_removal_and_insert}
+    grades = {pair: {'segment': [0], 'grade': [10], 'times': [0]} for pair in pair_of_removal_and_insert}
     solution_fomat = {'solution': None, 'request_blank': [], 'objective': np.inf}
     ALNS_solution = {'current': copy.deepcopy(solution_fomat), 'insert': copy.deepcopy(solution_fomat),
                      'best': copy.deepcopy(solution_fomat)}
@@ -211,6 +212,7 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
                                                              algorithm_input_data, T_MAX)
             ALNS_best_objectives.append(ALNS_solution['best']['objective'])
         # grades update
+        print(rewards)
         grades = grades_update(grades, segment, rewards)
         T_MAX = 0.9999 * T_MAX
         if T_MAX < T_MIN:
@@ -221,7 +223,7 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
 
 if __name__ == '__main__':
     t_1 = time.time()
-    random.seed(100)
+    random.seed(10)
     # 初始化
     number_of_orders = 10
     path_of_file = '..//benchmark//200//LC1_2_2'
@@ -246,7 +248,7 @@ if __name__ == '__main__':
     number_of_removal_orders = int(0.2 * len(algorithm_input_data.orders))
     number_of_iter_LNS = int(first_stage_solution_trucks/5)
     t_3 = time.time()
-    # todo LNS is not exe !!!
+    # todo LNS is exe-ing !!!
     # second_stage_solution = second_stage(algorithm_input_data, first_stage_solution, number_of_removal_orders,
     #                                      number_of_iter_LNS)
     second_stage_solution = first_stage_solution
@@ -269,8 +271,8 @@ if __name__ == '__main__':
     pair_of_removal_and_insert = [('random', 'greedy'), ('shaw', 'greedy'), ('worst', 'greedy')]
     # pair_of_removal_and_insert = [('shaw', 'greedy'), ('worst', 'greedy'), ('string', 'greedy')]
     # todo notation: here second_stage_solution should be complete
-    number_of_iter_ALNS = 2000
-    number_of_segment_iter = 5
+    number_of_iter_ALNS = 1000
+    number_of_segment_iter = 10
     ALNS_solution, grades, ALNS_best_objectives = ALNS(second_stage_solution, pair_of_removal_and_insert,
                                                        number_of_iter_ALNS, number_of_segment_iter,
                                                        number_of_removal_orders, algorithm_input_data)
