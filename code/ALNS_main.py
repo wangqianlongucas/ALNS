@@ -159,14 +159,13 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
     ALNS_solution['best']['solution'] = ALNS_solution['current']['solution']
     ALNS_solution['best']['objective'] = ALNS_solution['current']['objective']
     ALNS_best_objectives = []
-
+    # 初最高温
+    T_MAX = 100
+    T_MIN = 10
+    is_T_limit = 0
     for segment in range(1, number_of_segment + 1):
         print('segment', segment)
         rewards = {pair: {'pi': 0, 'sita': 0} for pair in pair_of_removal_and_insert}
-        # 循环测试
-        # 初最高温
-        T_MAX = 100
-        T_MIN = 1
         for iter in range(number_of_segment_iter):
             print('iter', iter)
             # 初始化
@@ -211,13 +210,18 @@ def ALNS(solution, pair_of_removal_and_insert, number_of_iter, number_of_segment
             ALNS_solution, rewards = update_rewards_and_others(ALNS_solution, select_pair, rewards,
                                                              algorithm_input_data, T_MAX)
             ALNS_best_objectives.append(ALNS_solution['best']['objective'])
+            if random.random() <= 0.5:
+                T_MAX = 0.996 * T_MAX
+                if T_MAX < T_MIN:
+                    print('segment_%s:T_MAX < T_MIN' % segment)
+                    is_T_limit = 1
+                    break
         # grades update
         print(rewards)
         grades = grades_update(grades, segment, rewards)
-        T_MAX = 0.9999 * T_MAX
-        if T_MAX < T_MIN:
-            print('segment_%s:T_MAX < T_MIN' % segment)
+        if is_T_limit:
             break
+
     return ALNS_solution, grades, ALNS_best_objectives
 
 
